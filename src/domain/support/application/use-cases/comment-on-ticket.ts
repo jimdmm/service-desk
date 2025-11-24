@@ -1,21 +1,26 @@
-import { left, right } from "@/core/either"
-import type { CommentOnTicketUseCaseRequestDTO, CommentOnTicketUseCaseResponseDTO } from "@/domain/support/application/dto/comment-on-ticket-dto"
-import { ResourceNotFoundError } from "@/domain/support/application/errors/resource-not-found-error"
-import { MakeCommentStrategy } from "@/domain/support/application/factories/make-comment-strategy"
-import type { CommentRepository } from "@/domain/support/application/repositories/comment-repository"
-import type { TicketRepository } from "@/domain/support/application/repositories/ticket-repository"
+import {left, right} from '@/core/either'
+import type {
+  CommentOnTicketUseCaseRequestDTO,
+  CommentOnTicketUseCaseResponseDTO,
+} from '@/domain/support/application/dto/comment-on-ticket-dto'
+import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
+import {MakeCommentStrategy} from '@/domain/support/application/factories/make-comment-strategy'
+import type {
+  CommentRepository,
+  TicketRepository,
+} from '@/domain/support/application/repositories'
 
 export class CommentOnTicketUseCase {
   constructor(
     private commentRepository: CommentRepository,
     private ticketRepository: TicketRepository
-  ) { }
+  ) {}
 
   async execute({
     ticketId,
     authorId,
     content,
-    authorType
+    authorType,
   }: CommentOnTicketUseCaseRequestDTO): Promise<CommentOnTicketUseCaseResponseDTO> {
     const ticket = await this.ticketRepository.findById(ticketId)
 

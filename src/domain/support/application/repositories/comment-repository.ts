@@ -1,4 +1,4 @@
-import type { Comment } from "@/domain/support/enterprise/entities/comment"
+import type {Comment} from '@/domain/support/enterprise/entities/comment'
 
 export interface CommentRepository {
   create(comment: Comment): Promise<void>

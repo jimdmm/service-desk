@@ -1,11 +1,17 @@
-import { ClientCommentStrategy } from "@/domain/support/application/strategies/client-comment-strategy"
-import type { CommentCreationStrategy, CommentStrategyType } from "@/domain/support/application/strategies/comment-creation-strategy"
-import { TechnicianCommentStrategy } from "@/domain/support/application/strategies/technician-comment-strategy"
+import {ClientCommentStrategy} from '@/domain/support/application/strategies/client-comment-strategy'
+import type {
+  CommentCreationStrategy,
+  CommentStrategyType,
+} from '@/domain/support/application/strategies/comment-creation-strategy'
+import {TechnicianCommentStrategy} from '@/domain/support/application/strategies/technician-comment-strategy'
 
 export class MakeCommentStrategy {
-  private static strategies = new Map<CommentStrategyType, CommentCreationStrategy>([
+  private static strategies = new Map<
+    CommentStrategyType,
+    CommentCreationStrategy
+  >([
     ['client', new ClientCommentStrategy()],
-    ['technician', new TechnicianCommentStrategy()]
+    ['technician', new TechnicianCommentStrategy()],
   ])
 
   static getStrategy(type: CommentStrategyType): CommentCreationStrategy {

@@ -1,5 +1,5 @@
-import type { Technician } from "@/domain/support/enterprise/entities/technician";
-import type { TechnicianRepository } from "@/domain/support/application/repositories/technician-repository";
+import type {Technician} from '@/domain/support/enterprise/entities/technician'
+import type {TechnicianRepository} from '@/domain/support/application/repositories/technician-repository'
 
 export class InMemoryTechnicianRepository implements TechnicianRepository {
   public items: Map<string, Technician> = new Map()
@@ -13,7 +13,9 @@ export class InMemoryTechnicianRepository implements TechnicianRepository {
   }
 
   async findByEmail(email: string): Promise<Technician | null> {
-    return Array.from(this.items.values()).find(item => item.email === email) ?? null
+    return (
+      Array.from(this.items.values()).find(item => item.email === email) ?? null
+    )
   }
 
   async save(technician: Technician): Promise<void> {

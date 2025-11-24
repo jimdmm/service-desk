@@ -1,5 +1,5 @@
-import type { ClientRepository } from "@/domain/support/application/repositories/client-repository";
-import type { Client } from "@/domain/support/enterprise/entities/client";
+import type {ClientRepository} from '@/domain/support/application/repositories/client-repository'
+import type {Client} from '@/domain/support/enterprise/entities/client'
 
 export class InMemoryClientRepository implements ClientRepository {
   public items: Map<string, Client> = new Map()

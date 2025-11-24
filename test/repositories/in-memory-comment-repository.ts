@@ -1,5 +1,5 @@
-import type { CommentRepository } from "@/domain/support/application/repositories/comment-repository";
-import type { Comment } from "@/domain/support/enterprise/entities/comment";
+import type {CommentRepository} from '@/domain/support/application/repositories/comment-repository'
+import type {Comment} from '@/domain/support/enterprise/entities/comment'
 
 export class InMemoryCommentRepository implements CommentRepository {
   public items: Map<string, Comment> = new Map()
@@ -13,7 +13,9 @@ export class InMemoryCommentRepository implements CommentRepository {
   }
 
   async findManyByTicketId(ticketId: string): Promise<Comment[]> {
-    const comments = Array.from(this.items.values()).filter(comment => comment.ticketId.toString() === ticketId)
+    const comments = Array.from(this.items.values()).filter(
+      comment => comment.ticketId.toString() === ticketId
+    )
 
     return comments
   }

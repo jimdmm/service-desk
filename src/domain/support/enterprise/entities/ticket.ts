@@ -1,8 +1,8 @@
-import type { Optional } from "@/core/@types/optional";
-import { AggregateRoot } from "@/core/aggregate-root";
-import type { UniqueEntityId } from "@/core/unique-entity-id";
-import { Priority } from "@/domain/support/enterprise/value-objects/priority";
-import { Status } from "@/domain/support/enterprise/value-objects/status";
+import type {Optional} from '@/core/@types/optional'
+import {AggregateRoot} from '@/core/aggregate-root'
+import type {UniqueEntityId} from '@/core/unique-entity-id'
+import {Priority} from '@/domain/support/enterprise/value-objects/priority'
+import {Status} from '@/domain/support/enterprise/value-objects/status'
 
 export interface TicketProps {
   title: string
@@ -31,7 +31,6 @@ export class Ticket extends AggregateRoot<TicketProps> {
     return ticket
   }
 
-
   get title() {
     return this.props.title
   }
@@ -41,11 +40,11 @@ export class Ticket extends AggregateRoot<TicketProps> {
   }
 
   get status() {
-    return this.props.status ?? Status.create("OPEN")
+    return this.props.status ?? Status.create('OPEN')
   }
 
   get priority() {
-    return this.props.priority ?? Priority.create("low")
+    return this.props.priority ?? Priority.create('low')
   }
 
   get openedBy() {
@@ -90,7 +89,7 @@ export class Ticket extends AggregateRoot<TicketProps> {
 
   assignTo(technicianId: UniqueEntityId): void {
     this.props.assignedBy = technicianId
-    this.props.status = Status.create('ASSIGNED');
+    this.props.status = Status.create('ASSIGNED')
     this.touch()
   }
 

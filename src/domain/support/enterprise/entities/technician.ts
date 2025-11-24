@@ -1,6 +1,6 @@
-import type { Optional } from "@/core/@types/optional"
-import { AggregateRoot } from "@/core/aggregate-root"
-import type { UniqueEntityId } from "@/core/unique-entity-id"
+import type {Optional} from '@/core/@types/optional'
+import {AggregateRoot} from '@/core/aggregate-root'
+import type {UniqueEntityId} from '@/core/unique-entity-id'
 
 export interface TechnicianProps {
   name: string
@@ -62,10 +62,12 @@ export class Technician extends AggregateRoot<TechnicianProps> {
     const qtyTicketsAssigned = this.props.ticketsAssigned.length
 
     if (qtyTicketsAssigned === 0) {
-      throw new Error("Technician has no tickets assigned.");
+      throw new Error('Technician has no tickets assigned.')
     }
 
-    const ticketIndex = this.props.ticketsAssigned.findIndex(id => id === ticketId)
+    const ticketIndex = this.props.ticketsAssigned.findIndex(
+      id => id === ticketId
+    )
 
     if (ticketIndex !== -1) {
       this.props.ticketsAssigned.splice(ticketIndex, 1)

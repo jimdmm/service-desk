@@ -1,0 +1,5 @@
+export * from '@/domain/support/application/repositories/technician-repository'
+export * from '@/domain/support/application/repositories/ticket-repository'
+export * from '@/domain/support/enterprise/services/ticket-assignment-service'
+export * from '@/domain/support/application/repositories/comment-repository'
+export * from '@/domain/support/application/repositories/client-repository'
