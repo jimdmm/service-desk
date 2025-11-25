@@ -1,11 +1,11 @@
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {CommentOnTicketUseCase} from '@/domain/support/application/use-cases/comment-on-ticket'
-import {makeTicket} from '@test/factories/make-ticket'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
+import { makeTicket } from '@test/factories/make-ticket'
 import {
   InMemoryCommentRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
-import {expect, it} from 'vitest'
+import { expect, it } from 'vitest'
 
 let inMemoryAnswerCommentRepository: InMemoryCommentRepository
 let inMemoryTicketRepository: InMemoryTicketRepository

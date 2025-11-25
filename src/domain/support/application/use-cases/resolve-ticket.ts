@@ -1,12 +1,12 @@
-import {left, right} from '@/core/either'
+import { left, right } from '@/core/either'
 import type {
   ResolveTicketUseCaseRequestDTO,
   ResolveTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/resolve-ticket-dto'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import type {TicketRepository} from '@/domain/support/application/repositories'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import type { TicketRepository } from '@/domain/support/application/repositories'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
 
 export class ResolveTicketUseCase {
   constructor(private ticketRepository: TicketRepository) {}

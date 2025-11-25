@@ -1,4 +1,4 @@
-import type {Client} from '@/domain/support/enterprise/entities/client'
+import type { Client } from '@/domain/support/enterprise/entities/client'
 
 export interface ClientRepository {
   create(client: Client): Promise<void>

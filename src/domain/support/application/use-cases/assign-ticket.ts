@@ -1,9 +1,9 @@
-import {left, right} from '@/core/either'
+import { left, right } from '@/core/either'
 import type {
   AssignTicketUseCaseRequestDTO,
   AssignTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/assign-ticket-dto'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import type {
   TechnicianRepository,
   TicketAssignmentService,

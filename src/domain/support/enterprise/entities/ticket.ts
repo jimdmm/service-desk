@@ -1,8 +1,8 @@
-import type {Optional} from '@/core/@types/optional'
-import {AggregateRoot} from '@/core/aggregate-root'
-import type {UniqueEntityId} from '@/core/unique-entity-id'
-import {Priority} from '@/domain/support/enterprise/value-objects/priority'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
+import type { Optional } from '@/core/@types/optional'
+import { AggregateRoot } from '@/core/aggregate-root'
+import type { UniqueEntityId } from '@/core/unique-entity-id'
+import { Priority } from '@/domain/support/enterprise/value-objects/priority'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
 
 export interface TicketProps {
   title: string

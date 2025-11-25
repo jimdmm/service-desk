@@ -1,12 +1,12 @@
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {OpenTicketUseCase} from '@/domain/support/application/use-cases/open-ticket'
-import {Priority} from '@/domain/support/enterprise/value-objects/priority'
-import {makeClient} from '@test/factories/make-client'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
+import { Priority } from '@/domain/support/enterprise/value-objects/priority'
+import { makeClient } from '@test/factories/make-client'
 import {
   InMemoryClientRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
-import {beforeEach, describe, expect, it} from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
 let inMemoryClientRepository: InMemoryClientRepository

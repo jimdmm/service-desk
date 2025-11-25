@@ -1,4 +1,4 @@
-import type {Ticket} from '@/domain/support/enterprise/entities/ticket'
+import type { Ticket } from '@/domain/support/enterprise/entities/ticket'
 
 export interface TicketRepository {
   create(ticket: Ticket): Promise<void>

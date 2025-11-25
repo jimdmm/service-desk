@@ -1,8 +1,8 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {Ticket} from '@/domain/support/enterprise/entities/ticket'
-import {Priority} from '@/domain/support/enterprise/value-objects/priority'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
-import {faker} from '@faker-js/faker'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { Ticket } from '@/domain/support/enterprise/entities/ticket'
+import { Priority } from '@/domain/support/enterprise/value-objects/priority'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
+import { faker } from '@faker-js/faker'
 
 interface MakeTicketProps {
   title: string

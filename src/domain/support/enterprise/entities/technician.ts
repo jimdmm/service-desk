@@ -1,6 +1,6 @@
-import type {Optional} from '@/core/@types/optional'
-import {AggregateRoot} from '@/core/aggregate-root'
-import type {UniqueEntityId} from '@/core/unique-entity-id'
+import type { Optional } from '@/core/@types/optional'
+import { AggregateRoot } from '@/core/aggregate-root'
+import type { UniqueEntityId } from '@/core/unique-entity-id'
 
 export interface TechnicianProps {
   name: string

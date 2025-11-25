@@ -7,8 +7,7 @@
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 80,
-    "bracketSpacing": false
+    "lineWidth": 80
   },
   "organizeImports": {
     "enabled": true
@@ -38,7 +37,8 @@
       "arrowParentheses": "asNeeded",
       "semicolons": "asNeeded",
       "trailingCommas": "es5",
-      "bracketSpacing": false
+      "bracketSpacing": true,
+      "bracketSameLine": false
     }
   }
 }

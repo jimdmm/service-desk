@@ -1,11 +1,11 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {EditTicketUseCase} from '@/domain/support/application/use-cases/edit-ticket'
-import {Priority} from '@/domain/support/enterprise/value-objects/priority'
-import {makeTicket} from '@test/factories/make-ticket'
-import {InMemoryTicketRepository} from '@test/repositories'
-import {beforeEach, describe, expect, it} from 'vitest'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { EditTicketUseCase } from '@/domain/support/application/use-cases/edit-ticket'
+import { Priority } from '@/domain/support/enterprise/value-objects/priority'
+import { makeTicket } from '@test/factories/make-ticket'
+import { InMemoryTicketRepository } from '@test/repositories'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: EditTicketUseCase

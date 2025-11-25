@@ -1,10 +1,10 @@
-import {left, right} from '@/core/either'
+import { left, right } from '@/core/either'
 import type {
   CommentOnTicketUseCaseRequestDTO,
   CommentOnTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/comment-on-ticket-dto'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {MakeCommentStrategy} from '@/domain/support/application/factories/make-comment-strategy'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { MakeCommentStrategy } from '@/domain/support/application/factories/make-comment-strategy'
 import type {
   CommentRepository,
   TicketRepository,

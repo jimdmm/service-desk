@@ -1,15 +1,15 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {AssignTicketUseCase} from '@/domain/support/application/use-cases/assign-ticket'
-import {TicketAssignmentService} from '@/domain/support/enterprise/services/ticket-assignment-service'
-import {makeTechnician} from '@test/factories/make-technician'
-import {makeTicket} from '@test/factories/make-ticket'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
+import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
+import { makeTechnician } from '@test/factories/make-technician'
+import { makeTicket } from '@test/factories/make-ticket'
 import {
   InMemoryTechnicianRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
-import {beforeEach, describe, expect, it} from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
 let inMemoryTechnicianRepository: InMemoryTechnicianRepository
@@ -33,7 +33,7 @@ describe('Assign Ticket Use Case', () => {
     await inMemoryTechnicianRepository.create(technician)
 
     const ticket = makeTicket(
-      {title: 'Support needed', description: 'Help me please'},
+      { title: 'Support needed', description: 'Help me please' },
       new UniqueEntityId('ticket-1')
     )
     await inMemoryTicketRepository.create(ticket)
@@ -63,7 +63,7 @@ describe('Assign Ticket Use Case', () => {
 
   it('should not be able to assign a ticket to a non existing technician', async () => {
     const ticket = makeTicket(
-      {title: 'Support needed', description: 'Help me please'},
+      { title: 'Support needed', description: 'Help me please' },
       new UniqueEntityId('ticket-1')
     )
     await inMemoryTicketRepository.create(ticket)
@@ -108,7 +108,7 @@ describe('Assign Ticket Use Case', () => {
     await inMemoryTechnicianRepository.create(technician)
 
     const ticket = makeTicket(
-      {title: 'Support needed', description: 'Help me please'},
+      { title: 'Support needed', description: 'Help me please' },
       new UniqueEntityId('ticket-2')
     )
     await inMemoryTicketRepository.create(ticket)

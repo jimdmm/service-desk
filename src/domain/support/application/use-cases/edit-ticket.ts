@@ -1,12 +1,12 @@
-import {left, right} from '@/core/either'
-import {UniqueEntityId} from '@/core/unique-entity-id'
+import { left, right } from '@/core/either'
+import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
   EditTicketUseCaseRequestDTO,
   EditTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/edit-ticket-dto'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import type {TicketRepository} from '@/domain/support/application/repositories'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import type { TicketRepository } from '@/domain/support/application/repositories'
 
 export class EditTicketUseCase {
   constructor(private ticketRepository: TicketRepository) {}

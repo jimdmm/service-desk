@@ -1,15 +1,15 @@
-import {left, right} from '@/core/either'
+import { left, right } from '@/core/either'
 import type {
   CreateTicketUseCaseRequestDTO,
   CreateTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/open-ticket-dto'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import type {
   ClientRepository,
   TicketRepository,
 } from '@/domain/support/application/repositories'
-import {Ticket} from '@/domain/support/enterprise/entities/ticket'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
+import { Ticket } from '@/domain/support/enterprise/entities/ticket'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
 
 export class OpenTicketUseCase {
   constructor(

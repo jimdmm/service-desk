@@ -1,4 +1,4 @@
-import type {Technician} from '@/domain/support/enterprise/entities/technician'
+import type { Technician } from '@/domain/support/enterprise/entities/technician'
 
 export interface TechnicianRepository {
   create(technician: Technician): Promise<void>

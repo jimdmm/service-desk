@@ -1,5 +1,5 @@
-import type {CommentRepository} from '@/domain/support/application/repositories/comment-repository'
-import type {Comment} from '@/domain/support/enterprise/entities/comment'
+import type { CommentRepository } from '@/domain/support/application/repositories/comment-repository'
+import type { Comment } from '@/domain/support/enterprise/entities/comment'
 
 export class InMemoryCommentRepository implements CommentRepository {
   public items: Map<string, Comment> = new Map()

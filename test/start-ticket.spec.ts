@@ -1,11 +1,11 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {StartTicketUseCase} from '@/domain/support/application/use-cases/start-ticket'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
-import {makeTicket} from '@test/factories/make-ticket'
-import {InMemoryTicketRepository} from '@test/repositories'
-import {beforeEach, describe, expect, it} from 'vitest'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { StartTicketUseCase } from '@/domain/support/application/use-cases/start-ticket'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
+import { makeTicket } from '@test/factories/make-ticket'
+import { InMemoryTicketRepository } from '@test/repositories'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: StartTicketUseCase
@@ -18,7 +18,7 @@ describe('Start Ticket Use Case', () => {
 
   it('should be able start a ticket', async () => {
     const ticket = makeTicket(
-      {status: Status.create('ASSIGNED')},
+      { status: Status.create('ASSIGNED') },
       new UniqueEntityId('ticket-1')
     )
 

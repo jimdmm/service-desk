@@ -1,14 +1,14 @@
-import {left, right} from '@/core/either'
+import { left, right } from '@/core/either'
 import type {
   UnassignTicketUseCaseRequestDTO,
   UnassignTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/unassign-ticket-dto'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import type {
   TechnicianRepository,
   TicketRepository,
 } from '@/domain/support/application/repositories'
-import type {TicketAssignmentService} from '@/domain/support/enterprise/services/ticket-assignment-service'
+import type { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 
 export class UnassignTicketUseCase {
   constructor(

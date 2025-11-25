@@ -1,5 +1,5 @@
-import type {TicketRepository} from '@/domain/support/application/repositories/ticket-repository'
-import type {Ticket} from '@/domain/support/enterprise/entities/ticket'
+import type { TicketRepository } from '@/domain/support/application/repositories/ticket-repository'
+import type { Ticket } from '@/domain/support/enterprise/entities/ticket'
 
 export class InMemoryTicketRepository implements TicketRepository {
   public items: Map<string, Ticket> = new Map()

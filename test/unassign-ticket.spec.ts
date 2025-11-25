@@ -1,16 +1,16 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {UnassignTicketUseCase} from '@/domain/support/application/use-cases/unassign-ticket'
-import {TicketAssignmentService} from '@/domain/support/enterprise/services/ticket-assignment-service'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
-import {makeTechnician} from '@test/factories/make-technician'
-import {makeTicket} from '@test/factories/make-ticket'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { UnassignTicketUseCase } from '@/domain/support/application/use-cases/unassign-ticket'
+import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
+import { makeTechnician } from '@test/factories/make-technician'
+import { makeTicket } from '@test/factories/make-ticket'
 import {
   InMemoryTechnicianRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
-import {beforeEach, describe, expect, it} from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
 let inMemoryTechnicianRepository: InMemoryTechnicianRepository

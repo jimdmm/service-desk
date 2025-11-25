@@ -1,10 +1,10 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import {ResourceNotFoundError} from '@/domain/support/application/errors/resource-not-found-error'
-import {DeleteTicketUseCase} from '@/domain/support/application/use-cases/delete-ticket'
-import {makeTicket} from '@test/factories/make-ticket'
-import {InMemoryTicketRepository} from '@test/repositories'
-import {beforeEach, describe, expect, it} from 'vitest'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
+import { DeleteTicketUseCase } from '@/domain/support/application/use-cases/delete-ticket'
+import { makeTicket } from '@test/factories/make-ticket'
+import { InMemoryTicketRepository } from '@test/repositories'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: DeleteTicketUseCase

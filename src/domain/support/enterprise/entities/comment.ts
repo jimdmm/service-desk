@@ -1,6 +1,6 @@
-import type {Optional} from '@/core/@types/optional'
-import {Entity} from '@/core/entity'
-import type {UniqueEntityId} from '@/core/unique-entity-id'
+import type { Optional } from '@/core/@types/optional'
+import { Entity } from '@/core/entity'
+import type { UniqueEntityId } from '@/core/unique-entity-id'
 
 export interface CommentProps {
   ticketId: UniqueEntityId

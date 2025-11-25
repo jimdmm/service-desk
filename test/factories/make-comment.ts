@@ -1,6 +1,6 @@
-import {UniqueEntityId} from '@/core/unique-entity-id'
-import {Comment} from '@/domain/support/enterprise/entities/comment'
-import {faker} from '@faker-js/faker'
+import { UniqueEntityId } from '@/core/unique-entity-id'
+import { Comment } from '@/domain/support/enterprise/entities/comment'
+import { faker } from '@faker-js/faker'
 
 interface MakeCommentProps {
   ticketId: UniqueEntityId

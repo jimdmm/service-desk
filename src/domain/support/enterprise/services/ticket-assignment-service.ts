@@ -1,8 +1,8 @@
-import {type Either, left, right} from '@/core/either'
-import {NotAllowedError} from '@/domain/support/application/errors/not-allowed-error'
-import type {Technician} from '@/domain/support/enterprise/entities/technician'
-import type {Ticket} from '@/domain/support/enterprise/entities/ticket'
-import {Status} from '@/domain/support/enterprise/value-objects/status'
+import { type Either, left, right } from '@/core/either'
+import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
+import type { Technician } from '@/domain/support/enterprise/entities/technician'
+import type { Ticket } from '@/domain/support/enterprise/entities/ticket'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
 
 export class TicketAssignmentService {
   assign(

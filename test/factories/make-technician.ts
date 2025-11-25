@@ -1,6 +1,6 @@
-import type {UniqueEntityId} from '@/core/unique-entity-id'
-import {Technician} from '@/domain/support/enterprise/entities/technician'
-import {faker} from '@faker-js/faker'
+import type { UniqueEntityId } from '@/core/unique-entity-id'
+import { Technician } from '@/domain/support/enterprise/entities/technician'
+import { faker } from '@faker-js/faker'
 
 interface MakeTechnicianProps {
   name: string

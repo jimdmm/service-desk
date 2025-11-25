@@ -1,4 +1,4 @@
-import {ValueObject} from '@/core/value-object'
+import { ValueObject } from '@/core/value-object'
 
 export type StatusLevel =
   | 'OPEN'
@@ -17,7 +17,7 @@ export class Status extends ValueObject<StatusProps> {
   }
 
   static create(value: StatusLevel): Status {
-    return new Status({value})
+    return new Status({ value })
   }
 
   canTransitionTo(newStatus: Status): boolean {
