@@ -1,3 +1,4 @@
+import { UniqueEntityId } from '@/core/unique-entity-id'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
 import { Priority } from '@/domain/support/enterprise/value-objects/priority'
@@ -33,18 +34,37 @@ describe('Open Ticket Use Case', () => {
       description:
         'O computador está apresentando tela azul ao iniciar o sistema operacional.',
       priority: Priority.create('medium'),
+      attachmentsIds: ['att-1', 'att-2'],
     })
 
+    expect(result.isRight()).toBe(true)
+
     if (result.isRight()) {
+      const ticketResult = result.value.ticket
+      const inMemoryTicketRepositoryItems = inMemoryTicketRepository.items
+        .values()
+        .next().value
+
       expect(inMemoryTicketRepository.items.size).toBe(1)
       expect(
-        inMemoryTicketRepository.items.has(result.value.ticket.id.toString())
+        inMemoryTicketRepository.items.has(ticketResult.id.toString())
       ).toBe(true)
-      expect(result.value.ticket.title).toEqual('Computador dando tela azul')
-      expect(result.value.ticket.description).toEqual(
+      expect(ticketResult.title).toEqual('Computador dando tela azul')
+      expect(ticketResult.description).toEqual(
         'O computador está apresentando tela azul ao iniciar o sistema operacional.'
       )
-      expect(result.value.ticket.priority.value).toBe('medium')
+      expect(ticketResult.priority.value).toBe('medium')
+      expect(
+        inMemoryTicketRepositoryItems?.attachments.currentItems
+      ).toHaveLength(2)
+      expect(inMemoryTicketRepositoryItems?.attachments.currentItems).toEqual([
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId('att-1'),
+        }),
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId('att-2'),
+        }),
+      ])
     }
   })
 
@@ -55,6 +75,7 @@ describe('Open Ticket Use Case', () => {
       description:
         'O computador está apresentando tela azul ao iniciar o sistema operacional.',
       priority: Priority.create('medium'),
+      attachmentsIds: [],
     })
 
     expect(result.isLeft()).toBe(true)

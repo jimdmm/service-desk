@@ -1,4 +1,5 @@
 import { left, right } from '@/core/either'
+import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
   CreateTicketUseCaseRequestDTO,
   CreateTicketUseCaseResponseDTO,
@@ -9,6 +10,8 @@ import type {
   TicketRepository,
 } from '@/domain/support/application/repositories'
 import { Ticket } from '@/domain/support/enterprise/entities/ticket'
+import { TicketAttachment } from '@/domain/support/enterprise/entities/ticket-attachment'
+import { TicketAttachmentList } from '@/domain/support/enterprise/entities/ticket-attachment-list'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 
 export class OpenTicketUseCase {
@@ -22,6 +25,7 @@ export class OpenTicketUseCase {
     title,
     description,
     priority,
+    attachmentsIds,
   }: CreateTicketUseCaseRequestDTO): Promise<CreateTicketUseCaseResponseDTO> {
     const client = await this.clientRepository.findById(clientId)
 
@@ -36,6 +40,15 @@ export class OpenTicketUseCase {
       openedBy: client.id,
       status: Status.create('OPEN'),
     })
+
+    const ticketAttachments = attachmentsIds.map(attachmentId => {
+      return TicketAttachment.create({
+        ticketId: ticket.id,
+        attachmentId: new UniqueEntityId(attachmentId),
+      })
+    })
+
+    ticket.attachments = new TicketAttachmentList(ticketAttachments)
 
     await this.ticketRepository.create(ticket)
 

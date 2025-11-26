@@ -1,7 +1,14 @@
-import type { TicketRepository } from '@/domain/support/application/repositories/ticket-repository'
+import type {
+  TicketAttachmentsRepository,
+  TicketRepository,
+} from '@/domain/support/application/repositories'
 import type { Ticket } from '@/domain/support/enterprise/entities/ticket'
 
 export class InMemoryTicketRepository implements TicketRepository {
+  constructor(
+    private ticketAttachmentsRepository: TicketAttachmentsRepository
+  ) {}
+
   public items: Map<string, Ticket> = new Map()
 
   async create(ticket: Ticket): Promise<void> {
@@ -22,5 +29,8 @@ export class InMemoryTicketRepository implements TicketRepository {
 
   async delete(ticket: Ticket): Promise<void> {
     this.items.delete(ticket.id.toString())
+    await this.ticketAttachmentsRepository.deleteManyByTicketId(
+      ticket.id.toString()
+    )
   }
 }

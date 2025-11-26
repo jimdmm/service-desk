@@ -3,15 +3,24 @@ import { NotAllowedError } from '@/domain/support/application/errors/not-allowed
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { DeleteTicketUseCase } from '@/domain/support/application/use-cases/delete-ticket'
 import { makeTicket } from '@test/factories/make-ticket'
-import { InMemoryTicketRepository } from '@test/repositories'
+import {
+  InMemoryTicketAttachmentsRepository,
+  InMemoryTicketRepository,
+} from '@test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+let inMemoryTicketAttachmentsRepository =
+  new InMemoryTicketAttachmentsRepository()
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: DeleteTicketUseCase
 
 describe('Delete Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
+    inMemoryTicketAttachmentsRepository =
+      new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     sut = new DeleteTicketUseCase(inMemoryTicketRepository)
   })
 

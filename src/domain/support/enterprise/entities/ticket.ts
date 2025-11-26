@@ -1,6 +1,7 @@
 import type { Optional } from '@/core/@types/optional'
 import { AggregateRoot } from '@/core/aggregate-root'
 import type { UniqueEntityId } from '@/core/unique-entity-id'
+import { TicketAttachmentList } from '@/domain/support/enterprise/entities/ticket-attachment-list'
 import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 
@@ -9,6 +10,7 @@ export interface TicketProps {
   description: string
   priority: Priority
   openedBy: UniqueEntityId
+  attachments: TicketAttachmentList
   status?: Status
   assignedBy?: UniqueEntityId | null
   createdAt: Date
@@ -17,12 +19,14 @@ export interface TicketProps {
 
 export class Ticket extends AggregateRoot<TicketProps> {
   static create(
-    props: Optional<TicketProps, 'createdAt'>,
+    props: Optional<TicketProps, 'createdAt' | 'priority' | 'attachments'>,
     id?: UniqueEntityId
   ) {
     const ticket = new Ticket(
       {
         ...props,
+        priority: props.priority ?? Priority.create('low'),
+        attachments: props.attachments ?? new TicketAttachmentList(),
         createdAt: props.createdAt ?? new Date(),
       },
       id
@@ -49,6 +53,10 @@ export class Ticket extends AggregateRoot<TicketProps> {
 
   get openedBy() {
     return this.props.openedBy
+  }
+
+  get attachments() {
+    return this.props.attachments
   }
 
   get assignedBy() {
@@ -81,6 +89,10 @@ export class Ticket extends AggregateRoot<TicketProps> {
   set status(status: Status) {
     this.props.status = status
     this.touch()
+  }
+
+  set attachments(attachments: TicketAttachmentList) {
+    this.props.attachments = attachments
   }
 
   private touch() {

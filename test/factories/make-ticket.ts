@@ -1,20 +1,14 @@
 import { UniqueEntityId } from '@/core/unique-entity-id'
-import { Ticket } from '@/domain/support/enterprise/entities/ticket'
+import {
+  Ticket,
+  type TicketProps,
+} from '@/domain/support/enterprise/entities/ticket'
 import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 import { faker } from '@faker-js/faker'
 
-interface MakeTicketProps {
-  title: string
-  description: string
-  priority: Priority
-  status: Status
-  openedBy: UniqueEntityId
-  assignedBy: UniqueEntityId
-}
-
 export function makeTicket(
-  override: Partial<MakeTicketProps> = {},
+  override: Partial<TicketProps> = {},
   id?: UniqueEntityId
 ) {
   const defaultPriority = Priority.create('low')

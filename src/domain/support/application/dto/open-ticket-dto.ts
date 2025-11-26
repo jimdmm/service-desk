@@ -8,6 +8,7 @@ export interface CreateTicketUseCaseRequestDTO {
   title: string
   description: string
   priority: Priority
+  attachmentsIds: string[]
 }
 
 export type CreateTicketUseCaseResponseDTO = Either<

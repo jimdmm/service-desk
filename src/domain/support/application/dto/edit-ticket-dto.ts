@@ -7,9 +7,10 @@ import type { Priority } from '@/domain/support/enterprise/value-objects/priorit
 export interface EditTicketUseCaseRequestDTO {
   ticketId: string
   clientId: string
-  title?: string
-  description?: string
-  priority?: Priority
+  title: string
+  description: string
+  priority: Priority
+  attachmentsIds: string[]
 }
 
 export type EditTicketUseCaseResponseDTO = Either<

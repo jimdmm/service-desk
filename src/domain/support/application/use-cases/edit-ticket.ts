@@ -6,10 +6,18 @@ import type {
 } from '@/domain/support/application/dto/edit-ticket-dto'
 import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
-import type { TicketRepository } from '@/domain/support/application/repositories'
+import type {
+  TicketAttachmentsRepository,
+  TicketRepository,
+} from '@/domain/support/application/repositories'
+import { TicketAttachment } from '@/domain/support/enterprise/entities/ticket-attachment'
+import { TicketAttachmentList } from '@/domain/support/enterprise/entities/ticket-attachment-list'
 
 export class EditTicketUseCase {
-  constructor(private ticketRepository: TicketRepository) {}
+  constructor(
+    private ticketRepository: TicketRepository,
+    private ticketAttachmentsRepository: TicketAttachmentsRepository
+  ) {}
 
   async execute({
     ticketId,
@@ -17,6 +25,7 @@ export class EditTicketUseCase {
     title,
     description,
     priority,
+    attachmentsIds,
   }: EditTicketUseCaseRequestDTO): Promise<EditTicketUseCaseResponseDTO> {
     const ticket = await this.ticketRepository.findById(ticketId)
 
@@ -28,17 +37,26 @@ export class EditTicketUseCase {
       return left(new NotAllowedError())
     }
 
-    if (title) {
-      ticket.title = title
-    }
+    const currentTicketAttachments =
+      await this.ticketAttachmentsRepository.findManyByTicketId(ticketId)
 
-    if (description) {
-      ticket.description = description
-    }
+    const ticketAttachmentList = new TicketAttachmentList(
+      currentTicketAttachments
+    )
 
-    if (priority) {
-      ticket.priority = priority
-    }
+    const ticketAttachments = attachmentsIds.map(attachmentId => {
+      return TicketAttachment.create({
+        attachmentId: new UniqueEntityId(attachmentId),
+        ticketId: ticket.id,
+      })
+    })
+
+    ticketAttachmentList.update(ticketAttachments)
+
+    ticket.title = title
+    ticket.priority = priority
+    ticket.description = description
+    ticket.attachments = ticketAttachmentList
 
     await this.ticketRepository.save(ticket)
 
