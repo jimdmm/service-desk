@@ -12,12 +12,15 @@ export class InMemoryCommentRepository implements CommentRepository {
     return this.items.get(id) ?? null
   }
 
-  async findManyByTicketId(ticketId: string): Promise<Comment[]> {
+  async findManyByTicketId(ticketId: string, page: number): Promise<Comment[]> {
+    const startIndex = (page - 1) * 20
+    const endIndex = page * 20
+
     const comments = Array.from(this.items.values()).filter(
       comment => comment.ticketId.toString() === ticketId
     )
 
-    return comments
+    return comments.slice(startIndex, endIndex)
   }
 
   async save(comment: Comment): Promise<void> {

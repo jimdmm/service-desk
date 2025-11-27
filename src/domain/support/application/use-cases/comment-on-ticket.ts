@@ -1,14 +1,15 @@
 import { left, right } from '@/core/either'
+import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
   CommentOnTicketUseCaseRequestDTO,
   CommentOnTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/comment-on-ticket-dto'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
-import { MakeCommentStrategy } from '@/domain/support/application/factories/make-comment-strategy'
 import type {
   CommentRepository,
   TicketRepository,
 } from '@/domain/support/application/repositories'
+import { Comment } from '@/domain/support/enterprise/entities/comment'
 
 export class CommentOnTicketUseCase {
   constructor(
@@ -28,17 +29,17 @@ export class CommentOnTicketUseCase {
       return left(new ResourceNotFoundError('Ticket'))
     }
 
-    try {
-      const strategy = MakeCommentStrategy.getStrategy(authorType)
-      const ticketComment = strategy.execute(ticketId, authorId, content)
+    const ticketComment = Comment.create({
+      ticketId: new UniqueEntityId(ticketId),
+      authorId: new UniqueEntityId(authorId),
+      content,
+      authorType,
+    })
 
-      await this.commentRepository.create(ticketComment)
+    await this.commentRepository.create(ticketComment)
 
-      return right({
-        comment: ticketComment,
-      })
-    } catch (error) {
-      return left(error as Error)
-    }
+    return right({
+      comment: ticketComment,
+    })
   }
 }

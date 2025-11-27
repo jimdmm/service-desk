@@ -1,22 +1,20 @@
 import { UniqueEntityId } from '@/core/unique-entity-id'
-import { Comment } from '@/domain/support/enterprise/entities/comment'
+import {
+  Comment,
+  type CommentProps,
+} from '@/domain/support/enterprise/entities/comment'
 import { faker } from '@faker-js/faker'
 
-interface MakeCommentProps {
-  ticketId: UniqueEntityId
-  authorId: UniqueEntityId
-  content: string
-}
-
 export function makeComment(
-  override: Partial<MakeCommentProps> = {},
+  override: Partial<CommentProps> = {},
   id?: UniqueEntityId
 ) {
   const comment = Comment.create(
     {
       ticketId: new UniqueEntityId(),
       authorId: new UniqueEntityId(),
-      content: faker.lorem.paragraph(),
+      content: faker.lorem.lines(2),
+      authorType: 'CLIENT',
       ...override,
     },
     id

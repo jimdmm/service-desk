@@ -4,15 +4,23 @@ import { ResourceNotFoundError } from '@/domain/support/application/errors/resou
 import { StartTicketUseCase } from '@/domain/support/application/use-cases/start-ticket'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 import { makeTicket } from '@test/factories/make-ticket'
-import { InMemoryTicketRepository } from '@test/repositories'
+import {
+  InMemoryTicketAttachmentsRepository,
+  InMemoryTicketRepository,
+} from '@test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: StartTicketUseCase
 
 describe('Start Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
+    inMemoryTicketAttachmentsRepository =
+      new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     sut = new StartTicketUseCase(inMemoryTicketRepository)
   })
 

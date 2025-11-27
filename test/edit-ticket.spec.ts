@@ -15,9 +15,11 @@ let sut: EditTicketUseCase
 
 describe('Edit Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
     inMemoryTicketAttachmentsRepository =
       new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     sut = new EditTicketUseCase(
       inMemoryTicketRepository,
       inMemoryTicketAttachmentsRepository

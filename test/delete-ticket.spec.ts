@@ -9,8 +9,7 @@ import {
 } from '@test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-let inMemoryTicketAttachmentsRepository =
-  new InMemoryTicketAttachmentsRepository()
+let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: DeleteTicketUseCase
 

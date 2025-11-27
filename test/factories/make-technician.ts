@@ -1,16 +1,12 @@
 import type { UniqueEntityId } from '@/core/unique-entity-id'
-import { Technician } from '@/domain/support/enterprise/entities/technician'
+import {
+  Technician,
+  type TechnicianProps,
+} from '@/domain/support/enterprise/entities/technician'
 import { faker } from '@faker-js/faker'
 
-interface MakeTechnicianProps {
-  name: string
-  email: string
-  maxConcurrentTickets: number
-  ticketsAssigned: UniqueEntityId[]
-}
-
 export function makeTechnician(
-  override: Partial<MakeTechnicianProps> = {},
+  override: Partial<TechnicianProps> = {},
   id?: UniqueEntityId
 ) {
   const technician = Technician.create(

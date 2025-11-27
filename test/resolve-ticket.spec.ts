@@ -3,16 +3,24 @@ import { NotAllowedError } from '@/domain/support/application/errors/not-allowed
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 import { makeTicket } from 'test/factories/make-ticket'
-import { InMemoryTicketRepository } from 'test/repositories'
+import {
+  InMemoryTicketAttachmentsRepository,
+  InMemoryTicketRepository,
+} from 'test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { ResolveTicketUseCase } from '../src/domain/support/application/use-cases/resolve-ticket'
 
+let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
 let inMemoryTicketRepository: InMemoryTicketRepository
 let sut: ResolveTicketUseCase
 
 describe('Resolve Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
+    inMemoryTicketAttachmentsRepository =
+      new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     sut = new ResolveTicketUseCase(inMemoryTicketRepository)
   })
 

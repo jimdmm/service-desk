@@ -5,17 +5,23 @@ import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 import { makeClient } from '@test/factories/make-client'
 import {
   InMemoryClientRepository,
+  InMemoryTicketAttachmentsRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryTicketRepository: InMemoryTicketRepository
+let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
 let inMemoryClientRepository: InMemoryClientRepository
 let sut: OpenTicketUseCase
 
 describe('Open Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
+    inMemoryTicketAttachmentsRepository =
+      new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     inMemoryClientRepository = new InMemoryClientRepository()
     sut = new OpenTicketUseCase(
       inMemoryTicketRepository,

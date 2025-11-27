@@ -8,10 +8,12 @@ import { makeTechnician } from '@test/factories/make-technician'
 import { makeTicket } from '@test/factories/make-ticket'
 import {
   InMemoryTechnicianRepository,
+  InMemoryTicketAttachmentsRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
 let inMemoryTicketRepository: InMemoryTicketRepository
 let inMemoryTechnicianRepository: InMemoryTechnicianRepository
 let assignmentService: TicketAssignmentService
@@ -19,7 +21,11 @@ let sut: UnassignTicketUseCase
 
 describe('Unassign Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
+    inMemoryTicketAttachmentsRepository =
+      new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     inMemoryTechnicianRepository = new InMemoryTechnicianRepository()
     assignmentService = new TicketAssignmentService()
     sut = new UnassignTicketUseCase(

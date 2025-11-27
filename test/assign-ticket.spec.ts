@@ -3,14 +3,17 @@ import { NotAllowedError } from '@/domain/support/application/errors/not-allowed
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
+import { makeClient } from '@test/factories/make-client'
 import { makeTechnician } from '@test/factories/make-technician'
 import { makeTicket } from '@test/factories/make-ticket'
 import {
   InMemoryTechnicianRepository,
+  InMemoryTicketAttachmentsRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
 let inMemoryTicketRepository: InMemoryTicketRepository
 let inMemoryTechnicianRepository: InMemoryTechnicianRepository
 let assignmentService: TicketAssignmentService
@@ -18,7 +21,11 @@ let sut: AssignTicketUseCase
 
 describe('Assign Ticket Use Case', () => {
   beforeEach(() => {
-    inMemoryTicketRepository = new InMemoryTicketRepository()
+    inMemoryTicketAttachmentsRepository =
+      new InMemoryTicketAttachmentsRepository()
+    inMemoryTicketRepository = new InMemoryTicketRepository(
+      inMemoryTicketAttachmentsRepository
+    )
     inMemoryTechnicianRepository = new InMemoryTechnicianRepository()
     assignmentService = new TicketAssignmentService()
     sut = new AssignTicketUseCase(
@@ -30,12 +37,18 @@ describe('Assign Ticket Use Case', () => {
 
   it('should be able assign a ticket', async () => {
     const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
+
     await inMemoryTechnicianRepository.create(technician)
 
     const ticket = makeTicket(
-      { title: 'Support needed', description: 'Help me please' },
+      {
+        title: 'Support needed',
+        description: 'Help me please',
+        openedBy: new UniqueEntityId('client-1'),
+      },
       new UniqueEntityId('ticket-1')
     )
+
     await inMemoryTicketRepository.create(ticket)
 
     const result = await sut.execute({
@@ -63,9 +76,14 @@ describe('Assign Ticket Use Case', () => {
 
   it('should not be able to assign a ticket to a non existing technician', async () => {
     const ticket = makeTicket(
-      { title: 'Support needed', description: 'Help me please' },
+      {
+        title: 'Support needed',
+        description: 'Help me please',
+        openedBy: new UniqueEntityId('client-1'),
+      },
       new UniqueEntityId('ticket-1')
     )
+
     await inMemoryTicketRepository.create(ticket)
 
     const result = await sut.execute({
@@ -99,8 +117,8 @@ describe('Assign Ticket Use Case', () => {
   it('should not be able to assign a ticket if technician reached max concurrent tickets', async () => {
     const technician = makeTechnician(
       {
-        maxConcurrentTickets: 1,
-        ticketsAssigned: [new UniqueEntityId('ticket-1')],
+        maxConcurrentTickets: 2,
+        ticketsAssigned: ['ticket-1', 'ticket-2'],
       },
       new UniqueEntityId('technician-1')
     )
@@ -108,9 +126,14 @@ describe('Assign Ticket Use Case', () => {
     await inMemoryTechnicianRepository.create(technician)
 
     const ticket = makeTicket(
-      { title: 'Support needed', description: 'Help me please' },
+      {
+        title: 'Support needed',
+        description: 'Help me please',
+        openedBy: new UniqueEntityId('client-1'),
+      },
       new UniqueEntityId('ticket-2')
     )
+
     await inMemoryTicketRepository.create(ticket)
 
     const result = await sut.execute({

@@ -3,6 +3,7 @@ import {
   Ticket,
   type TicketProps,
 } from '@/domain/support/enterprise/entities/ticket'
+import { TicketAttachmentList } from '@/domain/support/enterprise/entities/ticket-attachment-list'
 import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 import { faker } from '@faker-js/faker'
@@ -22,6 +23,7 @@ export function makeTicket(
       status: defaultStatus,
       openedBy: new UniqueEntityId(),
       assignedBy: null,
+      attachments: new TicketAttachmentList(),
       ...override,
     },
     id
