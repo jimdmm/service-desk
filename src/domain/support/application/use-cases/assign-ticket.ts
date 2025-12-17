@@ -15,7 +15,7 @@ export class AssignTicketUseCase {
     private ticketRepository: TicketRepository,
     private technicianRepository: TechnicianRepository,
     private assignmentService: TicketAssignmentService
-  ) {}
+  ) { }
 
   async execute({
     ticketId,

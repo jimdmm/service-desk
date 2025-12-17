@@ -1,7 +1,8 @@
 import { UniqueEntityId } from '@/core/unique-entity-id'
-import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { UnassignTicketUseCase } from '@/domain/support/application/use-cases/unassign-ticket'
+import { InvalidTicketStatusTransitionError } from '@/domain/support/enterprise/errors/invalid-ticket-status-transition-error'
+import { TicketNotAssignedError } from '@/domain/support/enterprise/errors/ticket-not-assigned-error'
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
 import { makeTechnician } from '@test/factories/make-technician'
@@ -136,7 +137,36 @@ describe('Unassign Ticket Use Case', () => {
 
     expect(result.isLeft()).toBe(true)
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(NotAllowedError)
+      expect(result.value).toBeInstanceOf(TicketNotAssignedError)
+    }
+  })
+
+  it('should not be able to unassign a ticket that is not in ASSIGNED status', async () => {
+    const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
+    await inMemoryTechnicianRepository.create(technician)
+
+    const ticket = makeTicket(
+      {
+        title: 'Support needed',
+        description: 'Help me please',
+        status: Status.create('IN_PROGRESS'),
+        assignedBy: technician.id,
+      },
+      new UniqueEntityId('ticket-1')
+    )
+
+    await inMemoryTicketRepository.create(ticket)
+
+    const result = await sut.execute({
+      ticketId: ticket.id.toString(),
+      technicianId: technician.id.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(
+        InvalidTicketStatusTransitionError
+      )
     }
   })
 })

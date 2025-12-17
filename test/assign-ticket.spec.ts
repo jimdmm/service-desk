@@ -1,9 +1,11 @@
 import { UniqueEntityId } from '@/core/unique-entity-id'
-import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
+import { InvalidTicketStatusTransitionError } from '@/domain/support/enterprise/errors/invalid-ticket-status-transition-error'
+import { TechnicianCapacityExceededError } from '@/domain/support/enterprise/errors/tecnician-capacity-exceeded-error'
+import { TicketAlreadyAssignedError } from '@/domain/support/enterprise/errors/ticket-already-assigned-error'
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
-import { makeClient } from '@test/factories/make-client'
+import { Status } from '@/domain/support/enterprise/value-objects/status'
 import { makeTechnician } from '@test/factories/make-technician'
 import { makeTicket } from '@test/factories/make-ticket'
 import {
@@ -144,7 +146,74 @@ describe('Assign Ticket Use Case', () => {
     expect(result.isLeft()).toBe(true)
 
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(NotAllowedError)
+      expect(result.value).toBeInstanceOf(TechnicianCapacityExceededError)
+    }
+  })
+
+  it('should not be able to assign a ticket that is not in OPEN status', async () => {
+    const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
+
+    await inMemoryTechnicianRepository.create(technician)
+
+    const ticket = makeTicket(
+      {
+        title: 'Support needed',
+        description: 'Help me please',
+        openedBy: new UniqueEntityId('client-1'),
+        status: Status.create('IN_PROGRESS'),
+      },
+      new UniqueEntityId('ticket-1')
+    )
+
+    await inMemoryTicketRepository.create(ticket)
+
+    const result = await sut.execute({
+      ticketId: ticket.id.toString(),
+      technicianId: technician.id.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(
+        InvalidTicketStatusTransitionError
+      )
+    }
+  })
+
+  it('should not be able to assign a ticket that is already assigned', async () => {
+    const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
+
+    await inMemoryTechnicianRepository.create(technician)
+    const anotherTechnician = makeTechnician(
+      {},
+      new UniqueEntityId('technician-2')
+    )
+    await inMemoryTechnicianRepository.create(anotherTechnician)
+
+    const ticket = makeTicket(
+      {
+        title: 'Support needed',
+        description: 'Help me please',
+        openedBy: new UniqueEntityId('client-1'),
+        assignedBy: anotherTechnician.id,
+        status: Status.create('ASSIGNED'),
+      },
+      new UniqueEntityId('ticket-1')
+    )
+
+    await inMemoryTicketRepository.create(ticket)
+
+    const result = await sut.execute({
+      ticketId: ticket.id.toString(),
+      technicianId: technician.id.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(
+        TicketAlreadyAssignedError
+      )
     }
   })
 })
