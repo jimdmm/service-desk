@@ -2,12 +2,16 @@
   "name": "sistema-de-chamados",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "npx vitest run",
-    "test:watch": "npx vitest",
+    "build": "nest build",
+    "format": "npx biome format --write",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/infra/main",
     "lint": "npx biome lint --write src",
-    "format": "npx biome format --write"
+    "test": "npx vitest run",
+    "test:watch": "npx vitest"
   },
   "keywords": [],
   "author": "",
@@ -16,9 +20,20 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@faker-js/faker": "^10.1.0",
+    "@nestjs/schematics": "^11.0.9",
+    "@nestjs/testing": "^11.1.12",
     "@types/node": "22.15.3",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.5"
+  },
+  "dependencies": {
+    "@nestjs/cli": "^11.0.16",
+    "@nestjs/common": "^11.1.12",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.12",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/platform-express": "^11.1.12"
   }
 }
