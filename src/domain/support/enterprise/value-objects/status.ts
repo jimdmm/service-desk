@@ -27,8 +27,8 @@ export class Status extends ValueObject<StatusProps> {
     const validTransitions: Record<StatusLevel, StatusLevel[]> = {
       OPEN: ['ASSIGNED'],
       ASSIGNED: ['IN_PROGRESS', 'OPEN'],
-      IN_PROGRESS: ['RESOLVED'],
-      RESOLVED: ['CLOSED'],
+      IN_PROGRESS: ['RESOLVED', 'ASSIGNED'],
+      RESOLVED: ['CLOSED', 'IN_PROGRESS'],
       CLOSED: [],
     }
 

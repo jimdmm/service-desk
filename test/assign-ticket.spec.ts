@@ -2,7 +2,7 @@ import { UniqueEntityId } from '@/core/unique-entity-id'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
 import { InvalidTicketStatusTransitionError } from '@/domain/support/enterprise/errors/invalid-ticket-status-transition-error'
-import { TechnicianCapacityExceededError } from '@/domain/support/enterprise/errors/tecnician-capacity-exceeded-error'
+import { TechnicianCapacityExceededError } from '@/domain/support/enterprise/errors/technician-capacity-exceeded-error'
 import { TicketAlreadyAssignedError } from '@/domain/support/enterprise/errors/ticket-already-assigned-error'
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
@@ -68,7 +68,7 @@ describe('Assign Ticket Use Case', () => {
       expect(
         inMemoryTicketRepository.items
           .get(ticket.id.toString())
-          ?.assignedBy?.toString()
+          ?.assignedTo?.toString()
       ).toEqual(technician.id.toString())
       expect(
         inMemoryTicketRepository.items.get(ticket.id.toString())?.status.value
@@ -160,7 +160,7 @@ describe('Assign Ticket Use Case', () => {
         title: 'Support needed',
         description: 'Help me please',
         openedBy: new UniqueEntityId('client-1'),
-        status: Status.create('IN_PROGRESS'),
+        status: Status.create('RESOLVED'),
       },
       new UniqueEntityId('ticket-1')
     )
@@ -195,7 +195,7 @@ describe('Assign Ticket Use Case', () => {
         title: 'Support needed',
         description: 'Help me please',
         openedBy: new UniqueEntityId('client-1'),
-        assignedBy: anotherTechnician.id,
+        assignedTo: anotherTechnician.id,
         status: Status.create('ASSIGNED'),
       },
       new UniqueEntityId('ticket-1')

@@ -25,8 +25,12 @@ describe('Start Ticket Use Case', () => {
   })
 
   it('should be able start a ticket', async () => {
+    const technicianId = 'technician-1'
     const ticket = makeTicket(
-      { status: Status.create('ASSIGNED') },
+      {
+        status: Status.create('ASSIGNED'),
+        assignedTo: new UniqueEntityId(technicianId),
+      },
       new UniqueEntityId('ticket-1')
     )
 
@@ -34,6 +38,7 @@ describe('Start Ticket Use Case', () => {
 
     const result = await sut.execute({
       ticketId: ticket.id.toString(),
+      technicianId,
     })
 
     expect(result.isRight()).toBe(true)
@@ -48,6 +53,7 @@ describe('Start Ticket Use Case', () => {
   it('should not be able to start a non existing ticket', async () => {
     const result = await sut.execute({
       ticketId: 'non-existing-ticket-id',
+      technicianId: 'technician-1',
     })
 
     expect(result.isLeft()).toBe(true)
@@ -57,13 +63,37 @@ describe('Start Ticket Use Case', () => {
     }
   })
 
-  it('should not be able to start a ticket if not going assigned', async () => {
+  it('should not be able to start a ticket if not assigned', async () => {
     const ticket = makeTicket({}, new UniqueEntityId('ticket-1'))
 
     await inMemoryTicketRepository.create(ticket)
 
     const result = await sut.execute({
       ticketId: ticket.id.toString(),
+      technicianId: 'technician-1',
+    })
+
+    expect(result.isLeft()).toBe(true)
+
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(NotAllowedError)
+    }
+  })
+
+  it('should not be able to start a ticket if technician is not the assigned one', async () => {
+    const ticket = makeTicket(
+      {
+        status: Status.create('ASSIGNED'),
+        assignedTo: new UniqueEntityId('technician-1'),
+      },
+      new UniqueEntityId('ticket-1')
+    )
+
+    await inMemoryTicketRepository.create(ticket)
+
+    const result = await sut.execute({
+      ticketId: ticket.id.toString(),
+      technicianId: 'another-technician',
     })
 
     expect(result.isLeft()).toBe(true)

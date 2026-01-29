@@ -21,7 +21,7 @@ export class ResolveTicketUseCase {
       return left(new ResourceNotFoundError('Ticket'))
     }
 
-    if (ticket.assignedBy?.toString() !== technicianId) {
+    if (ticket.assignedTo?.toString() !== technicianId) {
       return left(new NotAllowedError())
     }
 
@@ -31,7 +31,7 @@ export class ResolveTicketUseCase {
       return left(new NotAllowedError())
     }
 
-    ticket.status = resolvedStatus
+    ticket.resolve()
 
     await this.ticketRepository.save(ticket)
 

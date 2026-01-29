@@ -11,20 +11,23 @@ export interface TicketProps {
   priority: Priority
   openedBy: UniqueEntityId
   attachments: TicketAttachmentList
-  status?: Status
-  assignedBy?: UniqueEntityId | null
+  status: Status
+  assignedTo?: UniqueEntityId | null
   createdAt: Date
   updatedAt?: Date
+  resolvedAt?: Date | null
+  closedAt?: Date | null
 }
 
 export class Ticket extends AggregateRoot<TicketProps> {
   static create(
-    props: Optional<TicketProps, 'createdAt' | 'priority' | 'attachments'>,
+    props: Optional<TicketProps, 'createdAt' | 'priority' | 'attachments' | 'status'>,
     id?: UniqueEntityId
   ) {
     const ticket = new Ticket(
       {
         ...props,
+        status: props.status ?? Status.create('OPEN'),
         priority: props.priority ?? Priority.create('low'),
         attachments: props.attachments ?? new TicketAttachmentList(),
         createdAt: props.createdAt ?? new Date(),
@@ -44,7 +47,7 @@ export class Ticket extends AggregateRoot<TicketProps> {
   }
 
   get status() {
-    return this.props.status ?? Status.create('OPEN')
+    return this.props.status
   }
 
   get priority() {
@@ -59,8 +62,16 @@ export class Ticket extends AggregateRoot<TicketProps> {
     return this.props.attachments
   }
 
-  get assignedBy() {
-    return this.props.assignedBy
+  get assignedTo() {
+    return this.props.assignedTo
+  }
+
+  get resolvedAt() {
+    return this.props.resolvedAt
+  }
+
+  get closedAt() {
+    return this.props.closedAt
   }
 
   get createdAt() {
@@ -100,14 +111,26 @@ export class Ticket extends AggregateRoot<TicketProps> {
   }
 
   assignTo(technicianId: UniqueEntityId): void {
-    this.props.assignedBy = technicianId
+    this.props.assignedTo = technicianId
     this.props.status = Status.create('ASSIGNED')
     this.touch()
   }
 
   unassign(status: Status): void {
-    this.props.assignedBy = undefined
+    this.props.assignedTo = undefined
     this.props.status = status
+    this.touch()
+  }
+
+  resolve(): void {
+    this.props.status = Status.create('RESOLVED')
+    this.props.resolvedAt = new Date()
+    this.touch()
+  }
+
+  close(): void {
+    this.props.status = Status.create('CLOSED')
+    this.props.closedAt = new Date()
     this.touch()
   }
 }

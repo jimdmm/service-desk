@@ -150,7 +150,7 @@ describe('Unassign Ticket Use Case', () => {
         title: 'Support needed',
         description: 'Help me please',
         status: Status.create('IN_PROGRESS'),
-        assignedBy: technician.id,
+        assignedTo: technician.id,
       },
       new UniqueEntityId('ticket-1')
     )

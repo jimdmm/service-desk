@@ -2,12 +2,12 @@ import type { Either } from '@/core/either'
 import type { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
 import type { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
 
-export interface StartTicketUseCaseRequestDTO {
+export interface CloseTicketUseCaseRequestDTO {
   ticketId: string
-  technicianId: string
+  clientId: string
 }
 
-export type StartTicketUseCaseResponseDTO = Either<
+export type CloseTicketUseCaseResponseDTO = Either<
   ResourceNotFoundError | NotAllowedError,
   {}
 >

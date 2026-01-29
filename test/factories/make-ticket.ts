@@ -22,7 +22,7 @@ export function makeTicket(
       priority: defaultPriority,
       status: defaultStatus,
       openedBy: new UniqueEntityId(),
-      assignedBy: null,
+      assignedTo: null,
       attachments: new TicketAttachmentList(),
       ...override,
     },
