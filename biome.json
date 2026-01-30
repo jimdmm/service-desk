@@ -23,7 +23,8 @@
         "noThisInStatic": "off"
       },
       "style": {
-        "noUselessElse": "off"
+        "noUselessElse": "off",
+        "useImportType": "off"
       },
       "suspicious": {
         "noDoubleEquals": "off",
