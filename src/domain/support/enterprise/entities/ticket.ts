@@ -51,7 +51,7 @@ export class Ticket extends AggregateRoot<TicketProps> {
   }
 
   get priority() {
-    return this.props.priority ?? Priority.create('low')
+    return this.props.priority
   }
 
   get openedBy() {

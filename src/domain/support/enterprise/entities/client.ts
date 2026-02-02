@@ -5,6 +5,7 @@ import type { UniqueEntityId } from '@/core/unique-entity-id'
 export interface ClientProps {
   name: string
   email: string
+  password: string
   createdAt: Date
 }
 
@@ -30,6 +31,10 @@ export class Client extends AggregateRoot<ClientProps> {
 
   get email() {
     return this.props.email
+  }
+
+  get password() {
+    return this.props.password
   }
 
   get createdAt() {

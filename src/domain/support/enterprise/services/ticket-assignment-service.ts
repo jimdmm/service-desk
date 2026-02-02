@@ -61,7 +61,10 @@ export class TicketAssignmentService {
       ))
     }
 
-    technician.unassignToTicket(ticket.id.toString())
+    if (!technician.unassignToTicket(ticket.id.toString())) {
+      return left(new TicketNotAssignedError())
+    }
+
     ticket.unassign(openStatus)
 
     return right(true)

@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enums
+enum TicketStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AuthorType {
+  CLIENT
+  TECHNICIAN
+}
+
+// Models
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tickets  Ticket[]
+  comments Comment[]
+
+  @@map("clients")
+}
+
+model Technician {
+  id                   String   @id @default(uuid())
+  name                 String
+  email                String   @unique
+  password             String
+  maxConcurrentTickets Int      @default(3) @map("max_concurrent_tickets")
+  createdAt            DateTime @default(now()) @map("created_at")
+
+  ticketsAssigned Ticket[]
+  comments        Comment[]
+
+  @@map("technicians")
+}
+
+model Ticket {
+  id          String         @id @default(uuid())
+  title       String
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(LOW)
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime?      @updatedAt @map("updated_at")
+  resolvedAt  DateTime?      @map("resolved_at")
+  closedAt    DateTime?      @map("closed_at")
+
+  openedBy   String     @map("opened_by")
+  client     Client     @relation(fields: [openedBy], references: [id])
+  assignedTo String?    @map("assigned_to")
+  technician Technician? @relation(fields: [assignedTo], references: [id])
+
+  comments    Comment[]
+  attachments TicketAttachment[]
+
+  @@map("tickets")
+}
+
+model Comment {
+  id         String     @id @default(uuid())
+  content    String
+  authorType AuthorType @map("author_type")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime?  @updatedAt @map("updated_at")
+
+  ticketId String @map("ticket_id")
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  clientId     String?     @map("client_id")
+  client       Client?     @relation(fields: [clientId], references: [id])
+  technicianId String?     @map("technician_id")
+  technician   Technician? @relation(fields: [technicianId], references: [id])
+
+  @@map("comments")
+}
+
+model Attachment {
+  id    String @id @default(uuid())
+  title String
+  link  String
+
+  ticketAttachment TicketAttachment?
+
+  @@map("attachments")
+}
+
+model TicketAttachment {
+  id String @id @default(uuid())
+
+  ticketId String @map("ticket_id")
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  attachmentId String     @unique @map("attachment_id")
+  attachment   Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+
+  @@map("ticket_attachments")
+}

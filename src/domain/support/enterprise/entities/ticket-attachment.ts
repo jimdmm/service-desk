@@ -16,8 +16,8 @@ export class TicketAttachment extends Entity<TicketAttachmentProps> {
   }
 
   static create(props: TicketAttachmentProps, id?: UniqueEntityId) {
-    const answerAttachment = new TicketAttachment(props, id)
+    const ticketAttachment = new TicketAttachment(props, id)
 
-    return answerAttachment
+    return ticketAttachment
   }
 }

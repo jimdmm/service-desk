@@ -5,6 +5,7 @@ import type { UniqueEntityId } from '@/core/unique-entity-id'
 export interface TechnicianProps {
   name: string
   email: string
+  password: string
   maxConcurrentTickets: number
   ticketsAssigned: string[]
   createdAt: Date
@@ -35,6 +36,10 @@ export class Technician extends AggregateRoot<TechnicianProps> {
     return this.props.email
   }
 
+  get password() {
+    return this.props.password
+  }
+
   get ticketsAssigned() {
     return this.props.ticketsAssigned
   }
@@ -62,7 +67,7 @@ export class Technician extends AggregateRoot<TechnicianProps> {
     const qtyTicketsAssigned = this.props.ticketsAssigned.length
 
     if (qtyTicketsAssigned === 0) {
-      throw new Error('Technician has no tickets assigned.')
+      return false;
     }
 
     const ticketIndex = this.props.ticketsAssigned.findIndex(
