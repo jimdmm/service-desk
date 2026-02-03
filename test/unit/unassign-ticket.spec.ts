@@ -45,14 +45,18 @@ describe('Unassign Ticket Use Case', () => {
       },
       new UniqueEntityId('ticket-1')
     )
+
     await inMemoryTicketRepository.create(ticket)
-
+    
     const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
-
+    
     await inMemoryTechnicianRepository.create(technician)
-
+    
     assignmentService.assign(ticket, technician)
 
+    await inMemoryTicketRepository.save(ticket)
+    await inMemoryTechnicianRepository.save(technician)
+    
     const result = await sut.execute({
       ticketId: ticket.id.toString(),
       technicianId: technician.id.toString(),
@@ -71,7 +75,7 @@ describe('Unassign Ticket Use Case', () => {
     }
   })
 
-  it('should not be able to assign a ticket to a non existing technician', async () => {
+  it('should not be able to unassign a ticket to a non existing technician', async () => {
     const ticket = makeTicket(
       {
         title: 'Support needed',
@@ -87,6 +91,9 @@ describe('Unassign Ticket Use Case', () => {
     await inMemoryTechnicianRepository.create(technician)
 
     assignmentService.assign(ticket, technician)
+
+    await inMemoryTicketRepository.save(ticket)
+    await inMemoryTechnicianRepository.save(technician)
 
     const result = await sut.execute({
       ticketId: ticket.id.toString(),
@@ -142,7 +149,10 @@ describe('Unassign Ticket Use Case', () => {
   })
 
   it('should not be able to unassign a ticket that is not in ASSIGNED status', async () => {
-    const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
+    const technician = makeTechnician(
+      { ticketsAssigned: ['ticket-1'] },
+      new UniqueEntityId('technician-1')
+    )
     await inMemoryTechnicianRepository.create(technician)
 
     const ticket = makeTicket(

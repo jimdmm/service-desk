@@ -14,7 +14,6 @@ export function makeTechnician(
       name: faker.person.fullName(),
       email: faker.internet.email(),
       maxConcurrentTickets: 3,
-      ticketsAssigned: [],
       ...override,
     },
     id

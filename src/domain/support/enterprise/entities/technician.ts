@@ -13,12 +13,13 @@ export interface TechnicianProps {
 
 export class Technician extends AggregateRoot<TechnicianProps> {
   static create(
-    props: Optional<TechnicianProps, 'createdAt' | 'maxConcurrentTickets'>,
+    props: Optional<TechnicianProps, 'createdAt' | 'maxConcurrentTickets' | 'ticketsAssigned'>,
     id?: UniqueEntityId
   ) {
     const technician = new Technician(
       {
         maxConcurrentTickets: 3,
+        ticketsAssigned: [],
         ...props,
         createdAt: props.createdAt ?? new Date(),
       },
@@ -63,19 +64,22 @@ export class Technician extends AggregateRoot<TechnicianProps> {
     this.props.ticketsAssigned.push(ticketId)
   }
 
-  unassignToTicket(ticketId: string) {
+  unassignToTicket(ticketId: string): boolean {
     const qtyTicketsAssigned = this.props.ticketsAssigned.length
 
     if (qtyTicketsAssigned === 0) {
-      return false;
+      return false
     }
 
     const ticketIndex = this.props.ticketsAssigned.findIndex(
       id => id === ticketId
     )
 
-    if (ticketIndex !== -1) {
-      this.props.ticketsAssigned.splice(ticketIndex, 1)
+    if (ticketIndex === -1) {
+      return false
     }
+
+    this.props.ticketsAssigned.splice(ticketIndex, 1)
+    return true
   }
 }

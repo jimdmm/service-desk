@@ -7,7 +7,7 @@ import {
   InMemoryTicketAttachmentsRepository,
   InMemoryTicketRepository,
 } from '@test/repositories'
-import { expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 let inMemoryCommentRepository: InMemoryCommentRepository
 let inMemoryTicketAttachmentsRepository: InMemoryTicketAttachmentsRepository
