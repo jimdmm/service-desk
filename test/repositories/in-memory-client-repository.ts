@@ -12,6 +12,12 @@ export class InMemoryClientRepository implements ClientRepository {
     return this.items.get(id) ?? null
   }
 
+  async findByEmail(email: string): Promise<Client | null> {
+    return (
+      Array.from(this.items.values()).find(item => item.email === email) ?? null
+    )
+  }
+
   async save(client: Client): Promise<void> {
     this.items.set(client.id.toString(), client)
   }

@@ -14,6 +14,18 @@ export class InMemoryTicketAttachmentsRepository
     return ticketAttachments
   }
 
+  async createMany(attachments: TicketAttachment[]): Promise<void> {
+    for (const attachment of attachments) {
+      this.items.set(attachment.id.toString(), attachment)
+    }
+  }
+
+  async deleteMany(attachments: TicketAttachment[]): Promise<void> {
+    for (const attachment of attachments) {
+      this.items.delete(attachment.id.toString())
+    }
+  }
+
   async deleteManyByTicketId(ticketId: string): Promise<void> {
     for (const [id, attachment] of this.items.entries()) {
       if (attachment.ticketId.toString() === ticketId) {

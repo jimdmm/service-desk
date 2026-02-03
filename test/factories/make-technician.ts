@@ -1,8 +1,11 @@
-import type { UniqueEntityId } from '@/core/unique-entity-id'
+import { Injectable } from '@nestjs/common'
+import { UniqueEntityId } from '@/core/unique-entity-id'
 import {
   Technician,
   type TechnicianProps,
 } from '@/domain/support/enterprise/entities/technician'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PrismaTechnicianMapper } from '@/infra/database/prisma/mappers/prisma-technician-mapper'
 import { faker } from '@faker-js/faker'
 
 export function makeTechnician(
@@ -13,6 +16,7 @@ export function makeTechnician(
     {
       name: faker.person.fullName(),
       email: faker.internet.email(),
+      password: faker.internet.password(),
       maxConcurrentTickets: 3,
       ...override,
     },
@@ -20,4 +24,21 @@ export function makeTechnician(
   )
 
   return technician
+}
+
+@Injectable()
+export class TechnicianFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaTechnician(
+    data: Partial<TechnicianProps> = {}
+  ): Promise<Technician> {
+    const technician = makeTechnician(data)
+
+    await this.prisma.technician.create({
+      data: PrismaTechnicianMapper.toPrisma(technician),
+    })
+
+    return technician
+  }
 }

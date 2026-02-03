@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import {
   Ticket,
@@ -6,6 +7,8 @@ import {
 import { TicketAttachmentList } from '@/domain/support/enterprise/entities/ticket-attachment-list'
 import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 import { Status } from '@/domain/support/enterprise/value-objects/status'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PrismaTicketMapper } from '@/infra/database/prisma/mappers/prisma-ticket-mapper'
 import { faker } from '@faker-js/faker'
 
 export function makeTicket(
@@ -30,4 +33,19 @@ export function makeTicket(
   )
 
   return ticket
+}
+
+@Injectable()
+export class TicketFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaTicket(data: Partial<TicketProps> = {}): Promise<Ticket> {
+    const ticket = makeTicket(data)
+
+    await this.prisma.ticket.create({
+      data: PrismaTicketMapper.toPrisma(ticket),
+    })
+
+    return ticket
+  }
 }

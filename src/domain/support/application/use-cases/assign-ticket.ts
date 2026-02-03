@@ -1,21 +1,23 @@
+import { Injectable } from '@nestjs/common'
 import { left, right } from '@/core/either'
 import type {
   AssignTicketUseCaseRequestDTO,
   AssignTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/assign-ticket-dto'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
-import type {
+import {
   TechnicianRepository,
-  TicketAssignmentService,
   TicketRepository,
 } from '@/domain/support/application/repositories'
+import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 
+@Injectable()
 export class AssignTicketUseCase {
   constructor(
     private ticketRepository: TicketRepository,
     private technicianRepository: TechnicianRepository,
     private assignmentService: TicketAssignmentService
-  ) { }
+  ) {}
 
   async execute({
     ticketId,

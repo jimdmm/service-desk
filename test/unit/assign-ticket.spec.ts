@@ -174,9 +174,7 @@ describe('Assign Ticket Use Case', () => {
 
     expect(result.isLeft()).toBe(true)
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(
-        InvalidTicketStatusTransitionError
-      )
+      expect(result.value).toBeInstanceOf(InvalidTicketStatusTransitionError)
     }
   })
 
@@ -211,9 +209,7 @@ describe('Assign Ticket Use Case', () => {
     expect(result.isLeft()).toBe(true)
 
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(
-        TicketAlreadyAssignedError
-      )
+      expect(result.value).toBeInstanceOf(TicketAlreadyAssignedError)
     }
   })
 })

@@ -1,0 +1,53 @@
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Query,
+} from '@nestjs/common'
+import { z } from 'zod'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { FetchCommentsTicketUseCase } from '@/domain/support/application/use-cases/fetch-comments-ticket'
+
+const pageQueryParamSchema = z
+  .string()
+  .optional()
+  .default('1')
+  .transform(Number)
+  .pipe(z.number().min(1))
+
+const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
+
+type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
+
+@Controller('/tickets/:ticketId/comments')
+export class FetchCommentsTicketController {
+  constructor(private fetchCommentsTicket: FetchCommentsTicketUseCase) {}
+
+  @Get()
+  @HttpCode(200)
+  async handle(
+    @Param('ticketId') ticketId: string,
+    @Query('page', queryValidationPipe) page: PageQueryParamSchema
+  ) {
+    const result = await this.fetchCommentsTicket.execute({
+      ticketId,
+      page,
+    })
+
+    if (result.isLeft()) {
+      throw new BadRequestException()
+    }
+
+    return {
+      comments: result.value.comments.map(comment => ({
+        id: comment.id.toString(),
+        content: comment.content,
+        authorId: comment.authorId.toString(),
+        authorType: comment.authorType,
+        createdAt: comment.createdAt,
+      })),
+    }
+  }
+}

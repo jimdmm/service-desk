@@ -47,16 +47,16 @@ describe('Unassign Ticket Use Case', () => {
     )
 
     await inMemoryTicketRepository.create(ticket)
-    
+
     const technician = makeTechnician({}, new UniqueEntityId('technician-1'))
-    
+
     await inMemoryTechnicianRepository.create(technician)
-    
+
     assignmentService.assign(ticket, technician)
 
     await inMemoryTicketRepository.save(ticket)
     await inMemoryTechnicianRepository.save(technician)
-    
+
     const result = await sut.execute({
       ticketId: ticket.id.toString(),
       technicianId: technician.id.toString(),
@@ -174,9 +174,7 @@ describe('Unassign Ticket Use Case', () => {
 
     expect(result.isLeft()).toBe(true)
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(
-        InvalidTicketStatusTransitionError
-      )
+      expect(result.value).toBeInstanceOf(InvalidTicketStatusTransitionError)
     }
   })
 })

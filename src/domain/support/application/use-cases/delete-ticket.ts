@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common'
 import { left, right } from '@/core/either'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
@@ -6,8 +7,9 @@ import type {
 } from '@/domain/support/application/dto/delete-ticket-dto'
 import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
-import type { TicketRepository } from '@/domain/support/application/repositories'
+import { TicketRepository } from '@/domain/support/application/repositories'
 
+@Injectable()
 export class DeleteTicketUseCase {
   constructor(private ticketRepository: TicketRepository) {}
 

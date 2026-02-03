@@ -13,7 +13,10 @@ export interface TechnicianProps {
 
 export class Technician extends AggregateRoot<TechnicianProps> {
   static create(
-    props: Optional<TechnicianProps, 'createdAt' | 'maxConcurrentTickets' | 'ticketsAssigned'>,
+    props: Optional<
+      TechnicianProps,
+      'createdAt' | 'maxConcurrentTickets' | 'ticketsAssigned'
+    >,
     id?: UniqueEntityId
   ) {
     const technician = new Technician(

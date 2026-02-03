@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common'
 import { left, right } from '@/core/either'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
@@ -5,12 +6,13 @@ import type {
   CommentOnTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/comment-on-ticket-dto'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
-import type {
+import {
   CommentRepository,
   TicketRepository,
 } from '@/domain/support/application/repositories'
 import { Comment } from '@/domain/support/enterprise/entities/comment'
 
+@Injectable()
 export class CommentOnTicketUseCase {
   constructor(
     private commentRepository: CommentRepository,

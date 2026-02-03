@@ -1,10 +1,12 @@
+import { Injectable } from '@nestjs/common'
 import { right } from '@/core/either'
 import type {
   FetchCommentsTicketUseCaseRequestDTO,
   FetchCommentsTicketUseCaseResponseDTO,
 } from '@/domain/support/application/dto/fetch-comments-ticket'
-import type { CommentRepository } from '@/domain/support/application/repositories'
+import { CommentRepository } from '@/domain/support/application/repositories'
 
+@Injectable()
 export class FetchCommentsTicketUseCase {
   constructor(private commentRepository: CommentRepository) {}
 

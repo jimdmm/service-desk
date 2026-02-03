@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common'
 import { left, right } from '@/core/either'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
@@ -6,13 +7,14 @@ import type {
 } from '@/domain/support/application/dto/edit-ticket-dto'
 import { NotAllowedError } from '@/domain/support/application/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/domain/support/application/errors/resource-not-found-error'
-import type {
+import {
   TicketAttachmentsRepository,
   TicketRepository,
 } from '@/domain/support/application/repositories'
 import { TicketAttachment } from '@/domain/support/enterprise/entities/ticket-attachment'
 import { TicketAttachmentList } from '@/domain/support/enterprise/entities/ticket-attachment-list'
 
+@Injectable()
 export class EditTicketUseCase {
   constructor(
     private ticketRepository: TicketRepository,

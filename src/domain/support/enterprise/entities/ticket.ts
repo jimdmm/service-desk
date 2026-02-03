@@ -21,7 +21,10 @@ export interface TicketProps {
 
 export class Ticket extends AggregateRoot<TicketProps> {
   static create(
-    props: Optional<TicketProps, 'createdAt' | 'priority' | 'attachments' | 'status'>,
+    props: Optional<
+      TicketProps,
+      'createdAt' | 'priority' | 'attachments' | 'status'
+    >,
     id?: UniqueEntityId
   ) {
     const ticket = new Ticket(

@@ -11,7 +11,9 @@
     "start:prod": "node dist/infra/main",
     "lint": "npx biome lint --write src",
     "test": "npx vitest run",
-    "test:watch": "npx vitest"
+    "test:watch": "npx vitest",
+    "test:e2e": "npx vitest run --config ./vitest.config.e2e.ts",
+    "test:e2e:watch": "npx vitest --config ./vitest.config.e2e.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,9 +24,14 @@
     "@faker-js/faker": "^10.1.0",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.12",
+    "@swc/core": "^1.15.11",
     "@types/node": "22.15.3",
+    "@types/pg": "^8.16.0",
+    "@types/supertest": "^6.0.3",
     "prisma": "^7.3.0",
+    "supertest": "^7.2.2",
     "typescript": "^5.9.3",
+    "unplugin-swc": "^1.5.9",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.5"
   },
@@ -36,8 +43,10 @@
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.12",
+    "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "dotenv": "^17.2.3",
+    "pg": "^8.18.0",
     "zod": "^4.3.6",
     "zod-validation-error": "^5.0.0"
   }

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common'
 import { type Either, left, right } from '@/core/either'
 import type { Technician } from '@/domain/support/enterprise/entities/technician'
 import type { Ticket } from '@/domain/support/enterprise/entities/ticket'
@@ -16,6 +17,7 @@ type UnassignmentError =
   | TicketNotAssignedError
   | InvalidTicketStatusTransitionError
 
+@Injectable()
 export class TicketAssignmentService {
   assign(
     ticket: Ticket,
@@ -28,10 +30,12 @@ export class TicketAssignmentService {
     const assignedStatus = Status.create('ASSIGNED')
 
     if (!ticket.status.canTransitionTo(assignedStatus)) {
-      return left(new InvalidTicketStatusTransitionError(
-        ticket.status.value,
-        assignedStatus.value
-      ))
+      return left(
+        new InvalidTicketStatusTransitionError(
+          ticket.status.value,
+          assignedStatus.value
+        )
+      )
     }
 
     if (!technician.canAssignNewTicket()) {
@@ -55,10 +59,12 @@ export class TicketAssignmentService {
     const openStatus = Status.create('OPEN')
 
     if (!ticket.status.canTransitionTo(openStatus)) {
-      return left(new InvalidTicketStatusTransitionError(
-        ticket.status.value,
-        openStatus.value
-      ))
+      return left(
+        new InvalidTicketStatusTransitionError(
+          ticket.status.value,
+          openStatus.value
+        )
+      )
     }
 
     if (!technician.unassignToTicket(ticket.id.toString())) {
