@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { DatabaseModule } from '../database/database.module'
+import { StorageModule } from '../storage/storage.module'
 
 // Controllers
 import { OpenTicketController } from './controllers/open-ticket.controller'
@@ -12,6 +13,7 @@ import { StartTicketController } from './controllers/start-ticket.controller'
 import { ResolveTicketController } from './controllers/resolve-ticket.controller'
 import { CommentOnTicketController } from './controllers/comment-on-ticket.controller'
 import { FetchCommentsTicketController } from './controllers/fetch-comments-ticket.controller'
+import { UploadAttachmentController } from './controllers/upload-attachment.controller'
 
 // Use Cases
 import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
@@ -24,12 +26,13 @@ import { StartTicketUseCase } from '@/domain/support/application/use-cases/start
 import { ResolveTicketUseCase } from '@/domain/support/application/use-cases/resolve-ticket'
 import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
 import { FetchCommentsTicketUseCase } from '@/domain/support/application/use-cases/fetch-comments-ticket'
+import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/use-cases/upload-and-create-attachment'
 
 // Services
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, StorageModule],
   controllers: [
     OpenTicketController,
     DeleteTicketController,
@@ -41,6 +44,7 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     ResolveTicketController,
     CommentOnTicketController,
     FetchCommentsTicketController,
+    UploadAttachmentController,
   ],
   providers: [
     OpenTicketUseCase,
@@ -53,6 +57,7 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     ResolveTicketUseCase,
     CommentOnTicketUseCase,
     FetchCommentsTicketUseCase,
+    UploadAndCreateAttachmentUseCase,
     TicketAssignmentService,
   ],
   exports: [DatabaseModule],

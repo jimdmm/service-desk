@@ -5,11 +5,13 @@ import { TechnicianRepository } from '@/domain/support/application/repositories/
 import { TicketRepository } from '@/domain/support/application/repositories/ticket-repository'
 import { CommentRepository } from '@/domain/support/application/repositories/comment-repository'
 import { TicketAttachmentsRepository } from '@/domain/support/application/repositories/ticket-attachments-repository'
+import { AttachmentRepository } from '@/domain/support/application/repositories/attachment-repository'
 import { PrismaClientRepository } from './prisma/repositories/prisma-client-repository'
 import { PrismaTechnicianRepository } from './prisma/repositories/prisma-technician-repository'
 import { PrismaTicketRepository } from './prisma/repositories/prisma-ticket-repository'
 import { PrismaCommentRepository } from './prisma/repositories/prisma-comment-repository'
 import { PrismaTicketAttachmentsRepository } from './prisma/repositories/prisma-ticket-attachments-repository'
+import { PrismaAttachmentRepository } from './prisma/repositories/prisma-attachment-repository'
 import { EnvModule } from '@/infra/env/env.module'
 
 @Module({
@@ -36,6 +38,10 @@ import { EnvModule } from '@/infra/env/env.module'
       provide: TicketAttachmentsRepository,
       useClass: PrismaTicketAttachmentsRepository,
     },
+    {
+      provide: AttachmentRepository,
+      useClass: PrismaAttachmentRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -44,6 +50,7 @@ import { EnvModule } from '@/infra/env/env.module'
     TicketRepository,
     CommentRepository,
     TicketAttachmentsRepository,
+    AttachmentRepository,
   ],
 })
 export class DatabaseModule {}
