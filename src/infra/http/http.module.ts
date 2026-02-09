@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { DatabaseModule } from '../database/database.module'
 import { StorageModule } from '../storage/storage.module'
+import { RegisterUserModule } from '../register-user/register-user.module'
 
 // Controllers
 import { OpenTicketController } from './controllers/open-ticket.controller'
@@ -14,6 +15,7 @@ import { ResolveTicketController } from './controllers/resolve-ticket.controller
 import { CommentOnTicketController } from './controllers/comment-on-ticket.controller'
 import { FetchCommentsTicketController } from './controllers/fetch-comments-ticket.controller'
 import { UploadAttachmentController } from './controllers/upload-attachment.controller'
+import { RegisterUserController } from './controllers/register-user.controller'
 
 // Use Cases
 import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
@@ -32,7 +34,7 @@ import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/u
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 
 @Module({
-  imports: [DatabaseModule, StorageModule],
+  imports: [DatabaseModule, StorageModule, RegisterUserModule],
   controllers: [
     OpenTicketController,
     DeleteTicketController,
@@ -45,6 +47,7 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     CommentOnTicketController,
     FetchCommentsTicketController,
     UploadAttachmentController,
+    RegisterUserController,
   ],
   providers: [
     OpenTicketUseCase,
