@@ -1,35 +1,36 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
-import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaClient } from '@prisma/client'
 import { Pool } from 'pg'
-
-// Module-level pool to avoid issues with super() call
-let _pool: Pool | null = null
-
-function getPool(): Pool {
-  if (!_pool) {
-    const connectionString = process.env.DATABASE_URL
-    if (!connectionString) {
-      throw new Error('DATABASE_URL is not set')
-    }
-    _pool = new Pool({ connectionString })
-  }
-  return _pool
-}
 
 @Injectable()
 export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  private pool: Pool
+
   constructor() {
-    const pool = getPool()
-    const adapter = new PrismaPg(pool)
+    const connectionString = process.env.DATABASE_URL
+
+    if (!connectionString) {
+      throw new Error('DATABASE_URL is not set')
+    }
+
+    const url = new URL(connectionString)
+    const schema = url.searchParams.get('schema')
+
+    const pool = new Pool({ connectionString })
+    const adapter = new PrismaPg(pool, {
+      schema: schema ?? undefined,
+    })
 
     super({
       log: ['warn', 'error'],
       adapter,
     })
+
+    this.pool = pool
   }
 
   onModuleInit() {
@@ -38,9 +39,6 @@ export class PrismaService
 
   async onModuleDestroy() {
     await this.$disconnect()
-    if (_pool) {
-      await _pool.end()
-      _pool = null
-    }
+    await this.pool.end()
   }
 }

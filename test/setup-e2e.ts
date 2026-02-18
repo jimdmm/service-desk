@@ -1,10 +1,10 @@
-import { config } from 'dotenv'
-import { PrismaClient } from '@prisma/client'
-import { PrismaPg } from '@prisma/adapter-pg'
-import { Pool } from 'pg'
-import { randomUUID } from 'node:crypto'
 import { execSync } from 'node:child_process'
+import { randomUUID } from 'node:crypto'
 import { envSchema } from '@/infra/env/env'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaClient } from '@prisma/client'
+import { config } from 'dotenv'
+import { Pool } from 'pg'
 
 config({ path: '.env', override: true })
 config({ path: '.env.test', override: true })
@@ -33,7 +33,7 @@ beforeAll(async () => {
   process.env.DATABASE_URL = databaseURL
 
   pool = new Pool({ connectionString: databaseURL })
-  const adapter = new PrismaPg(pool)
+  const adapter = new PrismaPg(pool, { schema: schemaId })
 
   prisma = new PrismaClient({
     log: ['warn', 'error'],
