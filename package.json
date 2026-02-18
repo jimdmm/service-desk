@@ -28,6 +28,7 @@
     "@types/bcryptjs": "^3.0.0",
     "@types/multer": "^2.0.0",
     "@types/node": "22.15.3",
+    "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.16.0",
     "@types/supertest": "^6.0.3",
     "prisma": "^7.3.0",
@@ -50,6 +51,8 @@
     "@prisma/client": "^7.3.0",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "pg": "^8.18.0",
     "zod": "^4.3.6",
     "zod-validation-error": "^5.0.0"

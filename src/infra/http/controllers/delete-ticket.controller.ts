@@ -1,3 +1,5 @@
+import { DeleteTicketUseCase } from '@/domain/support/application/use-cases/delete-ticket'
+import { Roles } from '@/infra/auth/roles'
 import {
   BadRequestException,
   Controller,
@@ -5,19 +7,8 @@ import {
   HttpCode,
   Param,
 } from '@nestjs/common'
-import { z } from 'zod'
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { DeleteTicketUseCase } from '@/domain/support/application/use-cases/delete-ticket'
 
-const deleteTicketParamsSchema = z.object({
-  ticketId: z.string().uuid(),
-  clientId: z.string().uuid(),
-})
-
-const paramsValidationPipe = new ZodValidationPipe(deleteTicketParamsSchema)
-
-type DeleteTicketParamsSchema = z.infer<typeof deleteTicketParamsSchema>
-
+@Roles('CLIENT')
 @Controller('/tickets/:ticketId/client/:clientId')
 export class DeleteTicketController {
   constructor(private deleteTicket: DeleteTicketUseCase) {}

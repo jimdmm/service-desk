@@ -1,3 +1,5 @@
+import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
+import { Public } from '@/infra/auth/public'
 import {
   BadRequestException,
   Body,
@@ -8,7 +10,6 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
 
 const commentOnTicketBodySchema = z.object({
   authorId: z.string().uuid(),
@@ -20,6 +21,7 @@ const bodyValidationPipe = new ZodValidationPipe(commentOnTicketBodySchema)
 
 type CommentOnTicketBodySchema = z.infer<typeof commentOnTicketBodySchema>
 
+@Public()
 @Controller('/tickets/:ticketId/comments')
 export class CommentOnTicketController {
   constructor(private commentOnTicket: CommentOnTicketUseCase) {}

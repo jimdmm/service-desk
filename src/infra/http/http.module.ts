@@ -1,11 +1,13 @@
 // Modules
 import { Module } from '@nestjs/common'
+import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 import { RegisterUserModule } from '../register-user/register-user.module'
 import { StorageModule } from '../storage/storage.module'
 
 // Controllers
 import { AssignTicketController } from './controllers/assign-ticket.controller'
+import { AuthenticateController } from './controllers/authenticate.controller'
 import { ChangeUserRoleController } from './controllers/change-user-role.controller'
 import { CloseTicketController } from './controllers/close-ticket.controller'
 import { CommentOnTicketController } from './controllers/comment-on-ticket.controller'
@@ -21,6 +23,8 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
 
 // Use Cases
 import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
+import { AuthenticateUserUseCase } from '@/domain/support/application/use-cases/authenticate-user'
+import { ChangeUserRoleUseCase } from '@/domain/support/application/use-cases/change-user-role'
 import { CloseTicketUseCase } from '@/domain/support/application/use-cases/close-ticket'
 import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
 import { DeleteTicketUseCase } from '@/domain/support/application/use-cases/delete-ticket'
@@ -30,7 +34,6 @@ import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-t
 import { ResolveTicketUseCase } from '@/domain/support/application/use-cases/resolve-ticket'
 import { StartTicketUseCase } from '@/domain/support/application/use-cases/start-ticket'
 import { UnassignTicketUseCase } from '@/domain/support/application/use-cases/unassign-ticket'
-import { ChangeUserRoleUseCase } from '@/domain/support/application/use-cases/change-user-role'
 import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/use-cases/upload-and-create-attachment'
 
 // Services
@@ -41,8 +44,10 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     DatabaseModule,
     StorageModule,
     RegisterUserModule,
+    CryptographyModule,
   ],
   controllers: [
+    AuthenticateController,
     OpenTicketController,
     DeleteTicketController,
     EditTicketController,
@@ -70,6 +75,7 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     FetchCommentsTicketUseCase,
     UploadAndCreateAttachmentUseCase,
     ChangeUserRoleUseCase,
+    AuthenticateUserUseCase,
     TicketAssignmentService,
   ],
   exports: [DatabaseModule],

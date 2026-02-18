@@ -1,3 +1,5 @@
+import { FetchCommentsTicketUseCase } from '@/domain/support/application/use-cases/fetch-comments-ticket'
+import { Public } from '@/infra/auth/public'
 import {
   BadRequestException,
   Controller,
@@ -8,7 +10,6 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { FetchCommentsTicketUseCase } from '@/domain/support/application/use-cases/fetch-comments-ticket'
 
 const pageQueryParamSchema = z
   .string()
@@ -21,6 +22,7 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 
+@Public()
 @Controller('/tickets/:ticketId/comments')
 export class FetchCommentsTicketController {
   constructor(private fetchCommentsTicket: FetchCommentsTicketUseCase) {}

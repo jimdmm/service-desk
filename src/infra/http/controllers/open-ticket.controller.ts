@@ -1,15 +1,14 @@
+import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
+import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 import {
   BadRequestException,
   Body,
   Controller,
   HttpCode,
-  Param,
   Post,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
-import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 
 const openTicketBodySchema = z.object({
   clientId: z.string().uuid(),

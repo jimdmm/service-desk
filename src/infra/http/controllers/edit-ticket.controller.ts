@@ -1,3 +1,6 @@
+import { EditTicketUseCase } from '@/domain/support/application/use-cases/edit-ticket'
+import { Priority } from '@/domain/support/enterprise/value-objects/priority'
+import { Roles } from '@/infra/auth/roles'
 import {
   BadRequestException,
   Body,
@@ -8,8 +11,6 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { EditTicketUseCase } from '@/domain/support/application/use-cases/edit-ticket'
-import { Priority } from '@/domain/support/enterprise/value-objects/priority'
 
 const editTicketBodySchema = z.object({
   title: z.string(),
@@ -22,6 +23,7 @@ const bodyValidationPipe = new ZodValidationPipe(editTicketBodySchema)
 
 type EditTicketBodySchema = z.infer<typeof editTicketBodySchema>
 
+@Roles('CLIENT')
 @Controller('/tickets/:ticketId/client/:clientId')
 export class EditTicketController {
   constructor(private editTicket: EditTicketUseCase) {}

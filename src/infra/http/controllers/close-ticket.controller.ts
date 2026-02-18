@@ -1,3 +1,5 @@
+import { CloseTicketUseCase } from '@/domain/support/application/use-cases/close-ticket'
+import { Roles } from '@/infra/auth/roles'
 import {
   BadRequestException,
   Controller,
@@ -5,8 +7,8 @@ import {
   Param,
   Patch,
 } from '@nestjs/common'
-import { CloseTicketUseCase } from '@/domain/support/application/use-cases/close-ticket'
 
+@Roles('CLIENT')
 @Controller('/tickets/:ticketId/close/client/:clientId')
 export class CloseTicketController {
   constructor(private closeTicket: CloseTicketUseCase) {}

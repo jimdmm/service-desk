@@ -1,3 +1,5 @@
+import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
+import { Roles } from '@/infra/auth/roles'
 import {
   BadRequestException,
   Controller,
@@ -5,8 +7,8 @@ import {
   Param,
   Patch,
 } from '@nestjs/common'
-import { AssignTicketUseCase } from '@/domain/support/application/use-cases/assign-ticket'
 
+@Roles('TECHNICIAN')
 @Controller('/tickets/:ticketId/assign/technician/:technicianId')
 export class AssignTicketController {
   constructor(private assignTicket: AssignTicketUseCase) {}

@@ -1,5 +1,6 @@
 import type { UserRole } from '@/domain/support/application/dto/change-user-role-dto'
 import { ChangeUserRoleUseCase } from '@/domain/support/application/use-cases/change-user-role'
+import { Roles } from '@/infra/auth/roles'
 import { Body, Controller, Param, Patch } from '@nestjs/common'
 
 export class ChangeUserRoleBodyDto {
@@ -7,6 +8,7 @@ export class ChangeUserRoleBodyDto {
   newRole!: UserRole
 }
 
+@Roles('ADMIN')
 @Controller('/admin')
 export class ChangeUserRoleController {
   constructor(private changeUserRole: ChangeUserRoleUseCase) {}

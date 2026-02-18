@@ -1,3 +1,5 @@
+import { ResolveTicketUseCase } from '@/domain/support/application/use-cases/resolve-ticket'
+import { Roles } from '@/infra/auth/roles'
 import {
   BadRequestException,
   Controller,
@@ -5,8 +7,8 @@ import {
   Param,
   Patch,
 } from '@nestjs/common'
-import { ResolveTicketUseCase } from '@/domain/support/application/use-cases/resolve-ticket'
 
+@Roles('TECHNICIAN')
 @Controller('/tickets/:ticketId/resolve/technician/:technicianId')
 export class ResolveTicketController {
   constructor(private resolveTicket: ResolveTicketUseCase) {}

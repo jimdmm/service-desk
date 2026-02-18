@@ -1,3 +1,6 @@
+import { InvalidAttachmentTypeError } from '@/domain/support/application/errors/invalid-attachment-type-error'
+import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/use-cases/upload-and-create-attachment'
+import { Public } from '@/infra/auth/public'
 import {
   BadRequestException,
   Controller,
@@ -9,13 +12,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { InvalidAttachmentTypeError } from '@/domain/support/application/errors/invalid-attachment-type-error'
-import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/use-cases/upload-and-create-attachment'
 
 @Controller('/attachments')
+@Public()
 export class UploadAttachmentController {
   constructor(
-    private uploadAndCreateAttachment: UploadAndCreateAttachmentUseCase,
+    private uploadAndCreateAttachment: UploadAndCreateAttachmentUseCase
   ) {}
 
   @Post()
@@ -31,9 +33,9 @@ export class UploadAttachmentController {
             fileType: '.(png|jpg|jpeg|pdf)',
           }),
         ],
-      }),
+      })
     )
-    file: Express.Multer.File,
+    file: Express.Multer.File
   ) {
     const result = await this.uploadAndCreateAttachment.execute({
       fileName: file.originalname,

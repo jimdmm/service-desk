@@ -2,6 +2,7 @@ import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { ClientFactory } from 'test/factories/make-client'
@@ -13,6 +14,7 @@ describe('Fetch Comments Ticket (E2E)', () => {
   let clientFactory: ClientFactory
   let ticketFactory: TicketFactory
   let commentFactory: CommentFactory
+  let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -41,6 +43,7 @@ describe('Fetch Comments Ticket (E2E)', () => {
     clientFactory = moduleRef.get(ClientFactory)
     ticketFactory = moduleRef.get(TicketFactory)
     commentFactory = moduleRef.get(CommentFactory)
+    jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
@@ -51,6 +54,7 @@ describe('Fetch Comments Ticket (E2E)', () => {
 
   test('[GET] /tickets/:ticketId/comments', async () => {
     const client = await clientFactory.makePrismaClient()
+    const accessToken = jwt.sign({ sub: client.id.toString(), role: 'CLIENT' })
 
     const ticket = await ticketFactory.makePrismaTicket({
       openedBy: client.id,
@@ -72,9 +76,9 @@ describe('Fetch Comments Ticket (E2E)', () => {
 
     const ticketId = ticket.id.toString()
 
-    const response = await request(app.getHttpServer()).get(
-      `/tickets/${ticketId}/comments`
-    )
+    const response = await request(app.getHttpServer())
+      .get(`/tickets/${ticketId}/comments`)
+      .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
     expect(response.body.comments).toHaveLength(2)

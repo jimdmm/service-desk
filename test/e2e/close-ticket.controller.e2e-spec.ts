@@ -3,6 +3,7 @@ import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { ClientFactory } from 'test/factories/make-client'
@@ -13,6 +14,7 @@ describe('Close Ticket (E2E)', () => {
   let prisma: PrismaService
   let clientFactory: ClientFactory
   let ticketFactory: TicketFactory
+  let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -36,6 +38,7 @@ describe('Close Ticket (E2E)', () => {
     prisma = moduleRef.get(PrismaService)
     clientFactory = moduleRef.get(ClientFactory)
     ticketFactory = moduleRef.get(TicketFactory)
+    jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
@@ -46,6 +49,7 @@ describe('Close Ticket (E2E)', () => {
 
   test('[PATCH] /tickets/:ticketId/close/client/:clientId', async () => {
     const client = await clientFactory.makePrismaClient()
+    const accessToken = jwt.sign({ sub: client.id.toString(), role: 'CLIENT' })
 
     const ticket = await ticketFactory.makePrismaTicket({
       openedBy: client.id,
@@ -55,9 +59,9 @@ describe('Close Ticket (E2E)', () => {
     const ticketId = ticket.id.toString()
     const clientId = client.id.toString()
 
-    const response = await request(app.getHttpServer()).patch(
-      `/tickets/${ticketId}/close/client/${clientId}`
-    )
+    const response = await request(app.getHttpServer())
+      .patch(`/tickets/${ticketId}/close/client/${clientId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)
 

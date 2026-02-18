@@ -1,4 +1,5 @@
 import { RegisterUserUseCase } from '@/domain/support/application/use-cases/register-user'
+import { Public } from '@/infra/auth/public'
 import { Body, Controller, Post } from '@nestjs/common'
 
 export class RegisterUserBodyDto {
@@ -7,6 +8,7 @@ export class RegisterUserBodyDto {
   password!: string
 }
 
+@Public()
 @Controller('/users')
 export class RegisterUserController {
   constructor(private registerUser: RegisterUserUseCase) {}

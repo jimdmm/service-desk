@@ -2,15 +2,13 @@ import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
+import { hash } from 'bcryptjs'
 import request from 'supertest'
 import { ClientFactory } from 'test/factories/make-client'
 
-describe('Upload Attachment (E2E)', () => {
+describe('Authenticate (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
-  let jwt: JwtService
   let clientFactory: ClientFactory
 
   beforeAll(async () => {
@@ -26,9 +24,6 @@ describe('Upload Attachment (E2E)', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
-
-    prisma = moduleRef.get(PrismaService)
-    jwt = moduleRef.get(JwtService)
     clientFactory = moduleRef.get(ClientFactory)
 
     await app.init()
@@ -38,22 +33,29 @@ describe('Upload Attachment (E2E)', () => {
     await app.close()
   })
 
-  test('[POST] /attachments', async () => {
-    const client = await clientFactory.makePrismaClient()
-    const accessToken = jwt.sign({ sub: client.id.toString(), role: 'CLIENT' })
+  test('[POST] /sessions', async () => {
+    await clientFactory.makePrismaClient({
+      email: 'john@doe.com',
+      password: await hash('password123', 8),
+    })
 
-    const response = await request(app.getHttpServer())
-      .post('/attachments')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .attach('file', './test/e2e/sample-upload.png')
+    const response = await request(app.getHttpServer()).post('/sessions').send({
+      email: 'john@doe.com',
+      password: 'password123',
+    })
 
     expect(response.statusCode).toBe(201)
     expect(response.body).toEqual({
-      attachmentId: expect.any(String),
+      access_token: expect.any(String),
+    })
+  })
+
+  test('[POST] /sessions - wrong credentials', async () => {
+    const response = await request(app.getHttpServer()).post('/sessions').send({
+      email: 'nonexistent@example.com',
+      password: 'password123',
     })
 
-    const attachmentOnDatabase = await prisma.attachment.findFirst()
-
-    expect(attachmentOnDatabase).toBeTruthy()
+    expect(response.statusCode).toBe(401)
   })
 })

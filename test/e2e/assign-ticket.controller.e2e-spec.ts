@@ -2,6 +2,7 @@ import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { ClientFactory } from 'test/factories/make-client'
@@ -14,6 +15,7 @@ describe('Assign Ticket (E2E)', () => {
   let clientFactory: ClientFactory
   let technicianFactory: TechnicianFactory
   let ticketFactory: TicketFactory
+  let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -43,6 +45,7 @@ describe('Assign Ticket (E2E)', () => {
     clientFactory = moduleRef.get(ClientFactory)
     technicianFactory = moduleRef.get(TechnicianFactory)
     ticketFactory = moduleRef.get(TicketFactory)
+    jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
@@ -54,6 +57,10 @@ describe('Assign Ticket (E2E)', () => {
   test('[PATCH] /tickets/:ticketId/assign/technician/:technicianId', async () => {
     const client = await clientFactory.makePrismaClient()
     const technician = await technicianFactory.makePrismaTechnician()
+    const accessToken = jwt.sign({
+      sub: technician.id.toString(),
+      role: 'TECHNICIAN',
+    })
 
     const ticket = await ticketFactory.makePrismaTicket({
       openedBy: client.id,
@@ -62,9 +69,9 @@ describe('Assign Ticket (E2E)', () => {
     const ticketId = ticket.id.toString()
     const technicianId = technician.id.toString()
 
-    const response = await request(app.getHttpServer()).patch(
-      `/tickets/${ticketId}/assign/technician/${technicianId}`
-    )
+    const response = await request(app.getHttpServer())
+      .patch(`/tickets/${ticketId}/assign/technician/${technicianId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)
 

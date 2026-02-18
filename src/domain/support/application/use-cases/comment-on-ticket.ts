@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common'
 import { left, right } from '@/core/either'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import type {
@@ -11,6 +10,7 @@ import {
   TicketRepository,
 } from '@/domain/support/application/repositories'
 import { Comment } from '@/domain/support/enterprise/entities/comment'
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class CommentOnTicketUseCase {
