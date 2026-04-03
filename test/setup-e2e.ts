@@ -23,11 +23,13 @@ function generateUniqueDatabaseURL(schemaId: string) {
   return url.toString()
 }
 
-const schemaId = randomUUID()
+let schemaId: string
 let prisma: PrismaClient
 let pool: Pool
 
 beforeAll(async () => {
+  schemaId = randomUUID()
+
   const databaseURL = generateUniqueDatabaseURL(schemaId)
 
   process.env.DATABASE_URL = databaseURL
