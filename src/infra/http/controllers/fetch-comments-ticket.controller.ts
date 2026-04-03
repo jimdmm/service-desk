@@ -1,5 +1,5 @@
 import { FetchCommentsTicketUseCase } from '@/domain/support/application/use-cases/fetch-comments-ticket'
-import { Public } from '@/infra/auth/public'
+import { Roles } from '@/infra/auth/roles'
 import { RedisCacheService } from '@/infra/cache/redis-cache.service'
 import {
   BadRequestException,
@@ -23,7 +23,7 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 
-@Public()
+@Roles('CLIENT', 'TECHNICIAN')
 @Controller('/tickets/:ticketId/comments')
 export class FetchCommentsTicketController {
   constructor(

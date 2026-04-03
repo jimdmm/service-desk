@@ -1,6 +1,6 @@
 import { InvalidAttachmentTypeError } from '@/domain/support/application/errors/invalid-attachment-type-error'
 import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/use-cases/upload-and-create-attachment'
-import { Public } from '@/infra/auth/public'
+import { Roles } from '@/infra/auth/roles'
 import {
   BadRequestException,
   Controller,
@@ -14,7 +14,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 
 @Controller('/attachments')
-@Public()
+@Roles('CLIENT', 'TECHNICIAN')
 export class UploadAttachmentController {
   constructor(
     private uploadAndCreateAttachment: UploadAndCreateAttachmentUseCase

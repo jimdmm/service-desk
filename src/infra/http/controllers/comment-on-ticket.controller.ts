@@ -1,5 +1,5 @@
 import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
-import { Public } from '@/infra/auth/public'
+import { Roles } from '@/infra/auth/roles'
 import { RedisCacheService } from '@/infra/cache/redis-cache.service'
 import {
   BadRequestException,
@@ -22,7 +22,7 @@ const bodyValidationPipe = new ZodValidationPipe(commentOnTicketBodySchema)
 
 type CommentOnTicketBodySchema = z.infer<typeof commentOnTicketBodySchema>
 
-@Public()
+@Roles('CLIENT', 'TECHNICIAN')
 @Controller('/tickets/:ticketId/comments')
 export class CommentOnTicketController {
   constructor(
