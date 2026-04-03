@@ -1,5 +1,6 @@
 import { CommentOnTicketUseCase } from '@/domain/support/application/use-cases/comment-on-ticket'
 import { Public } from '@/infra/auth/public'
+import { RedisCacheService } from '@/infra/cache/redis-cache.service'
 import {
   BadRequestException,
   Body,
@@ -24,7 +25,10 @@ type CommentOnTicketBodySchema = z.infer<typeof commentOnTicketBodySchema>
 @Public()
 @Controller('/tickets/:ticketId/comments')
 export class CommentOnTicketController {
-  constructor(private commentOnTicket: CommentOnTicketUseCase) {}
+  constructor(
+    private commentOnTicket: CommentOnTicketUseCase,
+    private cache: RedisCacheService
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -44,6 +48,8 @@ export class CommentOnTicketController {
     if (result.isLeft()) {
       throw new BadRequestException(result.value.message)
     }
+
+    await this.cache.delByPattern(`comments:${ticketId}:*`)
 
     return {
       commentId: result.value.comment.id.toString(),

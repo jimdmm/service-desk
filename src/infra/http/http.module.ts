@@ -1,5 +1,6 @@
 // Modules
 import { Module } from '@nestjs/common'
+import { CacheModule } from '../cache/cache.module'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 import { RegisterUserModule } from '../register-user/register-user.module'
@@ -45,6 +46,7 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     StorageModule,
     RegisterUserModule,
     CryptographyModule,
+    CacheModule,
   ],
   controllers: [
     AuthenticateController,
