@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common'
 import { CacheModule } from '../cache/cache.module'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
-import { RegisterUserModule } from '../register-user/register-user.module'
 import { StorageModule } from '../storage/storage.module'
 
 // Controllers
@@ -32,6 +31,7 @@ import { DeleteTicketUseCase } from '@/domain/support/application/use-cases/dele
 import { EditTicketUseCase } from '@/domain/support/application/use-cases/edit-ticket'
 import { FetchCommentsTicketUseCase } from '@/domain/support/application/use-cases/fetch-comments-ticket'
 import { OpenTicketUseCase } from '@/domain/support/application/use-cases/open-ticket'
+import { RegisterUserUseCase } from '@/domain/support/application/use-cases/register-user'
 import { ResolveTicketUseCase } from '@/domain/support/application/use-cases/resolve-ticket'
 import { StartTicketUseCase } from '@/domain/support/application/use-cases/start-ticket'
 import { UnassignTicketUseCase } from '@/domain/support/application/use-cases/unassign-ticket'
@@ -41,13 +41,7 @@ import { UploadAndCreateAttachmentUseCase } from '@/domain/support/application/u
 import { TicketAssignmentService } from '@/domain/support/enterprise/services/ticket-assignment-service'
 
 @Module({
-  imports: [
-    DatabaseModule,
-    StorageModule,
-    RegisterUserModule,
-    CryptographyModule,
-    CacheModule,
-  ],
+  imports: [DatabaseModule, StorageModule, CryptographyModule, CacheModule],
   controllers: [
     AuthenticateController,
     OpenTicketController,
@@ -78,6 +72,7 @@ import { TicketAssignmentService } from '@/domain/support/enterprise/services/ti
     UploadAndCreateAttachmentUseCase,
     ChangeUserRoleUseCase,
     AuthenticateUserUseCase,
+    RegisterUserUseCase,
     TicketAssignmentService,
   ],
   exports: [DatabaseModule],
