@@ -1,6 +1,13 @@
+import { UserAlreadyExistsError } from '@/domain/support/application/errors/user-already-exists-error'
 import { RegisterUserUseCase } from '@/domain/support/application/use-cases/register-user'
 import { Public } from '@/infra/auth/public'
-import { Body, Controller, Post } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  Post,
+} from '@nestjs/common'
 
 export class RegisterUserBodyDto {
   name!: string
@@ -24,7 +31,13 @@ export class RegisterUserController {
     })
 
     if (result.isLeft()) {
-      throw result.value
+      const error = result.value
+
+      if (error instanceof UserAlreadyExistsError) {
+        throw new ConflictException(error.message)
+      }
+
+      throw new BadRequestException(error.message)
     }
 
     const { user } = result.value
