@@ -64,6 +64,6 @@ describe('RegisterUserController (e2e)', () => {
         password: 'password456',
       })
 
-    expect(response.statusCode).toBe(500)
+    expect(response.statusCode).toBe(409)
   })
 })

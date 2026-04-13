@@ -135,6 +135,6 @@ describe('ChangeUserRoleController (e2e)', () => {
         newRole: 'TECHNICIAN',
       })
 
-    expect(response.statusCode).toBe(500) // Or whatever error status you expect
+    expect(response.statusCode).toBe(404)
   })
 })

@@ -1,7 +1,17 @@
 import type { UserRole } from '@/domain/support/application/dto/change-user-role-dto'
+import { UserAlreadyExistsError } from '@/domain/support/application/errors/user-already-exists-error'
+import { UserNotFoundError } from '@/domain/support/application/errors/user-not-found-error'
 import { ChangeUserRoleUseCase } from '@/domain/support/application/use-cases/change-user-role'
 import { Roles } from '@/infra/auth/roles'
-import { Body, Controller, Param, Patch } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  NotFoundException,
+  Param,
+  Patch,
+} from '@nestjs/common'
 
 export class ChangeUserRoleBodyDto {
   currentRole!: UserRole
@@ -27,7 +37,17 @@ export class ChangeUserRoleController {
     })
 
     if (result.isLeft()) {
-      throw result.value
+      const error = result.value
+
+      if (error instanceof UserNotFoundError) {
+        throw new NotFoundException(error.message)
+      }
+
+      if (error instanceof UserAlreadyExistsError) {
+        throw new ConflictException(error.message)
+      }
+
+      throw new BadRequestException(error.message)
     }
 
     const { user } = result.value
